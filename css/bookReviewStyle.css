@@ -290,14 +290,6 @@ body,
     width: 100%;
 }
 
-#holder{
-    display: flex;
-    flex-direction: column;
-    justify-items: left;
-    width: 150px;
-    height: 80px;
-    background-color: blanchedalmond;
-}
 #searchResBtn {
     width: 15%;
     margin-left: 2%;
@@ -305,10 +297,6 @@ body,
 
 #topResults {
     width: 100%;
-}
-
-.searchBkInfo {
-    float: left;
 }
 
 #searchBarDiv {
@@ -333,7 +321,11 @@ body,
     margin-top: 3%;
     margin-left: 5%;
 }
-
+.cut-text{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 #frontCover {
     width: 80px;
     height: 110px;
@@ -350,7 +342,7 @@ body,
     border-top: 1px solid rgb(87, 87, 87);
 }
 
-#searchBkInfo {
+.searchBkInfo {
     margin-top: 7%;
     float: left;
     width: 200px;

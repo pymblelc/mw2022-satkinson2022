@@ -221,25 +221,38 @@ $(document).ready(function () {
             displaySearch(arrSearch[i], mother.id);
         }
     }
-    /*function searchHolder(search, mother) {
-        var uniqueId = JSON.stringify(Math.floor(Math.random() * 10000));
-        let holder = document.createElement('div');
-        holder.className = 'searchBkInfo';
-        holder.id = uniqueId
-        console.log(holder.id);
-        document.getElementById(mother).appendChild(holder); //create a way to wrap here
-        displaySearch(search, holder.id);
-    }*/
+    // function searchHolder(search, mother) {
+    //     var uniqueId = JSON.stringify(Math.floor(Math.random() * 10000));
+    //     let holder = document.createElement('div');
+    //     holder.className = 'searchBkInfo';
+    //     holder.id = uniqueId;
+    //     console.log(holder.id);
+    //     document.getElementById(mother).appendChild(holder); //create a way to wrap here
+    //     displaySearch(search, holder.id);
+    // }
     function displaySearch(search, motherDiv) { //displays player input
         //create parent div
         var specObj = search;
         var nameBook = firstLetterUpper(specObj.bookName); //create a way to show this
         var writtenBy = firstLetterUpper(specObj.author);
+        // Left side
         createDiv('frontCover', 'searchBkInfo', motherDiv, '');
-        createDiv('searchTitle', 'searchBkInfo', motherDiv, nameBook); //creates title
-        createDiv('searchauthor', 'searchBkInfo', motherDiv, writtenBy); //author
-        createDiv('teaserText', 'searchBkInfo', motherDiv, specObj.wordedRating); //teaserText
-        createDiv('otherPfp', 'searchBkInfo', motherDiv, specObj.reviewer); //usersPfp
+        // Right side
+        let search_details = document.createElement("div");
+        search_details.classList.add("searchBkInfo");
+        search_details.innerHTML = `
+            <p class="">${nameBook}</p>
+            <p>${writtenBy}</p>
+            <p class="cut-text">${specObj.wordedRating}</p>
+            <p>${specObj.reviewer}</p>
+        `;
+
+        document.getElementById(motherDiv).appendChild(search_details);
+
+        // createDiv('searchTitle', 'searchBkInfo', motherDiv, nameBook); //creates title
+        // createDiv('searchauthor', 'searchBkInfo', motherDiv, writtenBy); //author
+        // createDiv('teaserText', 'searchBkInfo', motherDiv, specObj.wordedRating); //teaserText
+        // createDiv('otherPfp', 'searchBkInfo', motherDiv, specObj.reviewer); //usersPfp
         //createDiv('otherUserPfp', 'circle', '#otherPfp', '');
     }
 
@@ -319,6 +332,8 @@ $(document).ready(function () {
         }
         var str2 = arr.join(" ");
         console.log(str2);
+
+        return str2;
     }
 
     function accessCamera() {
