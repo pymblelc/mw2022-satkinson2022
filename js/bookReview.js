@@ -159,6 +159,7 @@ $(document).ready(function () {
         obj.surname = $('#addSurname').val();
         console.log(jsonData);
         addUser(obj, usersUrl, '621d80b634fd621565858a79', arrUsers);
+        setPersonalPage();
         document.querySelector("#personalPg").classList.remove("hidden");
         document.querySelector("#totalTaskBar").classList.remove("hidden");
         document.querySelector('#signUpPg').classList.add("hidden");
@@ -277,7 +278,7 @@ $(document).ready(function () {
                 rating = 5;
         }
         var bookData = {
-            "bookName": $('#bookName').val(), //go straight to get the jquery
+            "bookName": $('#bookName').val().toLowerCase(), //go straight to get the jquery
             "author": $('#bookAuthor').val(),
             "rating": rating,
             "releaseDate": $('#bookRelease').val(),
@@ -357,8 +358,6 @@ $(document).ready(function () {
     $('#savePersonalData').click(function () { //when create account is pressed
         console.log(jsonData);
         updateData(jsonData);
-        setPersonalPage();
-        
     })
     //login
     $('#findUserData').click(function () {
