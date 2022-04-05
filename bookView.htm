@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Book Review</title>
+    <link rel="stylesheet" href="css/bookReviewStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="center" id="phoneScreen">
+        <!--buttons that will flip you through the screens -------------------------->
+        <div class="hidden pages" id="totalTaskBar">
+            <div id="taskBar">
+                <button class="buttons notScanBtn" id="barcodeBtn">║║│║</button>
+            </div>
+            <div class="taskBarBtm" id="taskBarBtm1">
+                <button class="buttons notHomeBtn" id="homeBtn">
+                    <font size="6px">⌂</font>
+                </button>
+                <button class="buttons notHomeBtn" id="searchBtn">
+                    <font size="5px">🔍︎</font>
+                </button>
+            </div>
+            <div class="taskBarBtm" id="taskBarBtm2">
+                <button class="buttons notHomeBtn" id="uploadBtn">
+                    <font size="6px">+</font>
+                </button>
+                <button class="buttons notHomeBtn accountBtns" id="userBtn">User</button>
+            </div>
+        </div>
+
+        <!--login page --------------------------------------------->
+        <div class="pages center stylingSignupLogin" id="loginPg">
+            <div class="heading">
+                <font face="Trebuchet MS" size="6px">BookView</font>
+            </div>
+            <!--change for logo-->
+            <div class="heading">
+                <font face="Trebuchet MS" size="5px">Log in to your account</font>
+            </div>
+            <!-- logging in buttons -->
+            <div class="center">
+                <input class="userInfo" id="enterUsername" placeholder="Username"><br>
+                <input type="password" class="userInfo" id="enterPassword" placeholder="Password"><br>
+                <div class="redText" id="checkingAccount">
+                    <p>
+                        <font face="Trebuchet MS" size="2px" color="red">Username or password is incorrect!</font>
+                    </p>
+                </div>
+                <button class="userBtnInfo" id="findUserData">Log in</button>
+                <div>
+                    <p>
+                        <font face="Trebuchet MS" size="2px">
+                            <hr class="breakLine">
+                            <br>
+                            Don't have an account? <a class="likeLink" id="signUpBtn">Sign Up</a>
+                        </font>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!--sign up page ---------------------------------------------->
+        <div class="hidden pages center stylingSignupLogin" id="signUpPg">
+            <!--used to differentiate the pages-->
+            <div class="signingUp" id="firstQs">
+                <!--used to differentiate the data-->
+                <div class="heading">
+                    <font face="Trebuchet MS" size="6px">BookView</font>
+                </div>
+                <!--change for logo-->
+                <div class="heading">
+                    <font face="Trebuchet MS" size="5px">Sign Up</font>
+                </div>
+                <div>
+                    <p>
+                        <font face="Trebuchet MS" size="2px">
+                            Already a member?<a class="likeLink" id="loginBtn">Log in</a>
+                        </font>
+                    </p>
+                </div>
+                <div class="center">
+                    <!-- Sign Up information inputs -->
+                    <input class="userInfo" id="createUsername" placeholder="Username"><br>
+                    <div class="redText" id="checkingUsername">
+                        <p>
+                            <font face="Trebuchet MS" size="2px" color="red">That username already exists!</font>
+                        </p>
+                    </div>
+                    <input type="password" class="userInfo" id="createPassword" placeholder="Password"><br>
+                    <input type="password" class="userInfo" id="createcheckPassword"
+                        placeholder="Re-enter Password"><br>
+                    <div class="redText" id="checkingPassword">
+                        <p>
+                            <font face="Trebuchet MS" size="2px" color="red">Passwords don't match!</font>
+                        </p>
+                    </div>
+                    <input class="userInfo" id="userEmail" placeholder="E-mail"><br>
+                </div>
+                <!-- saving user data buttons-->
+                <div class="center">
+                    <button class="userBtnInfo saveUserData" id="saveFormalData">
+                        <font face="Trebuchet MS" size="3px">Continue</font>
+                    </button>
+                </div>
+            </div>
+            <div class="hidden signingUp" id="secondQs">
+                <!--personalisation inputs-->
+                <div class="heading">
+                    <font face="Trebuchet MS" size="6px">BookView</font>
+                </div>
+                <!--change for logo-->
+                <div id="heading">
+                    <font face="Trebuchet MS" size="3px">Personalise your account!</font>
+                </div>
+                <input class="userInfo part2" id="addName" placeholder="First Name">
+                <input class="userInfo part2" id="addSurname" placeholder="Surname"><br>
+                <!--<font face="Trebuchet MS" size="2px"><p>Enter Birthday: <input type="date" class="userInfo" id="createBday"><br></p></font>
+                profile pics
+                <div class="userInfo profilePics" id="owlProfPic"><image></image>Pic 1</div>
+                <div class="userInfo profilePics" id="dogProfPic"><image></image>Pic 2</div>
+                <div class="userInfo profilePics" id="catProfPic"><image></image>Pic 3</div>-->
+                <div class="center">
+                    <button class="userBtnInfo saveUserData" id="savePersonalData">
+                        <font face="Trebuchet MS" size="3px">Sign Up</a></font>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!--upload page-->
+        <div class="hidden pages" id="uploadPg">
+            <!-- I want to check that the user is logged in before adding to database-->
+            <div class="center">
+                <div>
+                    <h2>Upload</h2>
+                    <div id="imgUpload">
+                        <image></image>Image goes here
+                    </div>
+                    <div id="uploadInputs">
+                        <div class="uploadTags">
+                            <p class="uploadWords">
+                            <p class="redText undoneAst">*</p>Title:
+                            </p>
+                        </div>
+                        <input class="bookInfo" id="bookName" placeholder="Book Name"><br>
+                        <div class="uploadTags">
+                            <p class="uploadWords">
+                            <p class="redText undoneAst">*</p>Author:
+                            </p>
+                        </div>
+                        <input class="bookInfo" id="bookAuthor" placeholder="Author"><br>
+                        <div class="uploadTags">
+                            <p class="uploadWords">Recommended Age:</p>
+                        </div>
+                        <input class="bookInfo" id="bookAgeReq" type="number" placeholder="Recommended Age"><br>
+                        <div id="releaseAndRating">
+                            <p class="redText undoneAst">*</p>
+                            <div class="nextToEachOther uploadTags">
+                                <p class="uploadWords" id="relaseTag">Release:
+                                </p><br>
+
+                                <input type="date" class="bookInfo" id="bookRelease">
+                            </div>
+
+                            <div class="uploadTags">
+                                <p class="uploadWords">Rating:
+                                <p class="redText undoneAst">*</p> <br>
+                                <input type="radio" name="rate" id="rate-1" value="1">
+                                <input type="radio" name="rate" id="rate-2" value="2">
+                                <input type="radio" name="rate" id="rate-3" value="3">
+                                <input type="radio" name="rate" id="rate-4" value="4">
+                                <input type="radio" name="rate" id="rate-5" value="5"></p>
+                            </div>
+                        </div>
+                        <p class="uploadTags uploadWords" id="opinionPg">
+                            Opinion: <textarea class="bookInfo" id="bookOpinion" cols="40"></textarea>
+                            <br>
+                        </p>
+
+                        <button class='userBtnInfo' id="uploadReview">Upload</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- search pages --------------------------->
+        <div class="hidden pages" id="searchPg">
+            <div id="searchBarDiv"><input class="search" id="searchBar" height="pixels"> <button class="userBtnInfo"
+                    id="searchResBtn">Search</button></div>
+            <div id="resultText">
+                Top Results for: <br>
+            </div>
+
+            <!-- <div class="searchResults">
+                    <div class="bookCover searchedBook"></div>
+                    <div id="searchBkInfo">
+                        <p class="searchBkInfo" id="searchtitle">Title</p>
+                        <p class="searchBkInfo" id="searchauthor">Author</p>
+                        <div class="searchBkInfo" id="showRatings"></div>
+                        <p class="searchBkInfo" id="teaserText">Bio</p><br>
+                        <div class="searchBkInfo" id="otherPfp">
+                            <div class="circle" id="otherUserPfp"></div>
+                            <p id="otherUsername">Username</p></div><br>
+                    </div> 
+                </div>   -->
+
+        </div>
+        <!-- user personal page ------------------------------------>
+        <div class="hidden middle pages" id="personalPg">
+            <button class="circle" id="personalSettings">⚙</button>
+            <div class="hidden center" id="logOutPopUp">
+                <button class="userBtnInfo" id="logOut">
+                    Log Out
+                </button>
+            </div>
+            <div style="width:100%">
+                <div class="personalInfo">
+                    <div class="shownPersonal" id="setUserName">
+                        <p>USERNAME</p>
+                    </div>
+                    <div class="shownPersonal" id="setName">
+                        <div class="next" id="setFirstName">first</div>
+                        <div class="next" id="setSurname">surname</div>
+                    </div>
+                    <div class="shownPersonal" id="userBio">BIO</div>
+                </div>
+                <div class="circle" id="sfcProfilePic">
+                </div>
+            </div>
+            <div id="followBar">
+                <button class="followingLst" id="perosonalFlwing">
+                    <p class="fllwpos" id="ttlFllwing">0</p><br>
+                    <p class="fllwWord">Following</p>
+                </button>
+                <button class="followingLst" id="perosonalFlws">
+                    <p class="fllwpos" id="ttlFllw">0</p><br>
+                    <p class="fllwWord">Followers</p>
+                </button>
+            </div>
+
+            <div id="bottomPrsnl">
+                <div id="showCasedBtns">
+                    <button class="showcased" id="yourPosts">YOUR POSTS</button>
+                    <button class="showcased" id="mostLiked">MOST LIKED</button>
+                    <button class="showcased hidden" id="likedPosts">LIKED</button>
+                </div>
+                <div class="bookCover">
+                    <image>THIS IS A BOOK</image>
+                </div>
+            </div>
+        </div>
+        <!-- home page ---------------------------------------->
+        <div class="beginPgs pages center" id="homePg">
+            <!--TODO need to add likes
+            Showcase how it may look, create a fake person the user is following 
+            Just showcasing how it would look-->
+        </div>
+        <!-- scan page ---------------------------------------->
+        <div class="beginPgs pages" id="scanPg">
+            <div class="hidden center" id="holdsCam">
+                <video autoplay="true" id="videoElement">
+                </video>
+            </div>
+            <button class="userBtnInfo hidden" id="scannerBtn">Scan</button>
+        </div>
+
+
+        <!-- coming soon pages -->
+        <div class="hidden pages center" id="comingSoon">
+            <p>THIS PAGE IS COMING SOON</p>
+        </div>
+
+        <script type="text/javascript" src="js/bookReview.js"></script>
+</body>
+
+</html>
