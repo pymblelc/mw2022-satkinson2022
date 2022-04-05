@@ -8,7 +8,8 @@ var currentUser = '';
 var jsonData = [];
 
 
-//getting data
+//-----------------getting data--------------------------
+//----- gets book review data ---------------------------
 function getBooks(url, apikey) {
     var settings = {
         "async": true,
@@ -27,6 +28,8 @@ function getBooks(url, apikey) {
         arrBooks = response;
     });
 }
+
+//----- gets user data ----------------------------------
 function getUsers(url, apikey) {
     var settings = {
         "async": true,
@@ -46,8 +49,11 @@ function getUsers(url, apikey) {
     });
 }
 
+
+//-----------------adding data--------------------------
+//----- gets user data----------------------------------
 function addUser(item, url, apikey) {
-    getUsers(url, apikey);
+    getUsers(url, apikey); //gets user data
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -68,6 +74,8 @@ function addUser(item, url, apikey) {
     });
 
 }
+
+//----- gets book review data----------------------------
 function addBook(item, url, apikey) {
     getBooks(url, apikey);
     var settings = {
@@ -91,29 +99,27 @@ function addBook(item, url, apikey) {
 
 }
 
-$(document).ready(function () {
-    //getting data
+
+$(document).ready(function () { //makes sure the document is always ready
+    //----- gets data----------------------------
     getBooks(bookReviewUrl, '621d80b634fd621565858a79');
     getUsers(usersUrl, '621d80b634fd621565858a79');
 
-    //getting pages to show up
+    //----- switching between pages based on button clicked ------------
     function switchPages(button, page) {
-        $(button).click(function () { //this is a lot to load, create a checking function
-
-            // $('.pages').hide();
+        $(button).click(function () { 
             document.querySelectorAll(".pages").forEach((element) => {
                 element.classList.add("hidden");
             });
-
-            // $('#totalTaskBar').show();
             document.querySelector("#totalTaskBar").classList.remove("hidden");
-
-            // $(page).show();
             document.querySelector(page).classList.remove("hidden");
         });
     }
 
+
+    //----- saving new user data ---> used when they sign up to create an account ------------
     function saveData() {
+        //----- variables used for checking 
         var samePasswords = false;
         var found = false;
         var rePassword = $('#createcheckPassword').val();
@@ -122,7 +128,8 @@ $(document).ready(function () {
         var firstName = '';
         var surname = '';
 
-        jsonData = {  //creates an object for the user
+        //----- creates an object which will be used to add new users to the database ------------
+        jsonData = {  
             "username": username,
             "password": password,
             "firstName": firstName,
@@ -132,65 +139,101 @@ $(document).ready(function () {
             "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
             "email": $('#userEmail').val(),
         }
-        //loop over arrUsers 
+        //---- loop over arrUsers --------------------------------------
         for (var i = 0; i <= arrUsers.length - 1; i++) {
             console.log(arrUsers[i].username);
+
+            //---- checking if the username already exists or if they left it blank  
             if (arrUsers[i].username == username && username != "") {
+                //red text stating the username already exists
                 $('#checkingUsername').show();
                 found = true;
-            } else if (password != rePassword && password != "") { //this keeps looping
+            } else if (password != rePassword && password != "") { //---- checking password is the same or left blank  
+                //red text saying the passwords aren't the same show
                 $('#checkingPassword').show();
-
                 samePasswords = true;
             }
         }
+
+        //---- adds user if the correct reqs are met -------------------
         if (found === false && samePasswords === false) {
-            //addUser(jsonData, usersUrl, '621d80b634fd621565858a79', arrUsers);
-            document.querySelector("#secondQs").classList.remove("hidden");
+            //---- showing the personalisation q's 
+            document.querySelector("#secondQs").classList.remove("hidden"); //personalisation
             document.querySelector('#firstQs').classList.add("hidden");
+
+            //---- setting current user so the username is easier to access
             currentUser = username;
             console.log('this is current ' + currentUser);
         }
 
     }
+
+
+    //---- used to update the data with the first and surname  ------------------
     function updateData(obj) {
-        console.log('button clicked');
+        console.log('button clicked'); //check if function runs
+
+        //---- getting the values from the enter first and surname 
         obj.firstName = $('#addName').val();
         obj.surname = $('#addSurname').val();
-        console.log(jsonData);
+        //console.log(jsonData);
+
+        //---- adding to the database 
         addUser(obj, usersUrl, '621d80b634fd621565858a79', arrUsers);
+
+        //--- setting personal details on the screen
         setPersonalPage();
-        document.querySelector("#personalPg").classList.remove("hidden");
-        document.querySelector("#totalTaskBar").classList.remove("hidden");
-        document.querySelector('#signUpPg').classList.add("hidden");
+        
+        document.querySelector("#personalPg").classList.remove("hidden"); //---showing personal page
+        document.querySelector("#totalTaskBar").classList.remove("hidden"); //---showing task bar
+        document.querySelector('#signUpPg').classList.add("hidden"); //hiding sign up q's
         console.log(obj);
     }
+
+
+    //---- finding the user data to log in the user
     function login() {
+        //---- getting values from inputs
         var username = $('#enterUsername').val();
         var password = $('#enterPassword').val();
-        console.log(arrUsers);
-        //loop over arrUsers
-        var found = false;
+        //console.log(arrUsers);
+        
+        var found = false; //---- find if user exists
+        //---- loop over arrUsers to find correct user and password
         for (var i = 0; i <= arrUsers.length - 1; i++) {
-            console.log(arrUsers[i].username);
+            //console.log(arrUsers[i].username);
+
+            //---- checks if the username exists and whether the password matches
             if (arrUsers[i].username == username && arrUsers[i].password == password) {
                 found = true;
-                document.querySelector("#personalPg").classList.remove("hidden");
-                document.querySelector("#totalTaskBar").classList.remove("hidden");
-                document.querySelector("#loginPg").classList.add("hidden");
+
+                document.querySelector("#personalPg").classList.remove("hidden"); //----  shows personal page
+                document.querySelector("#totalTaskBar").classList.remove("hidden"); //---- shows taskbar
+                document.querySelector("#loginPg").classList.add("hidden"); //---- hides login
+
                 currentUser = username;
+
+                //---- sets the personal page with the correct data
                 setPersonalPage();
-                break;
+                break; //---- breaking out of loop
             }
         }
         if (found === false) {
+            //---- red text to show that username or password is incorrect
             $('#checkingAccount').show();
         }
     }
-    function setPersonalPage() { //fix this
-        $('#setUserName').html(currentUser); //replace username
+
+    //---- used to set the personal page details --------------
+    function setPersonalPage() { //TODO: fix this, not working with sign up
+        //---- displays users username
+        $('#setUserName').html(currentUser); 
+
+        //---- loops over arrUsers to display correct details
         for (var i = 0; i < arrUsers.length; i++) {
-            console.log(arrUsers[i].username);
+            //console.log(arrUsers[i].username);
+
+            //---- if details are correct then displays first and second name
             if (arrUsers[i].username == currentUser) {
                 $('#setFirstName').html(arrUsers[i].firstName);
                 $('#setSurname').html(arrUsers[i].surname);
@@ -198,16 +241,20 @@ $(document).ready(function () {
         }
     }
 
-    function createDiv(ident, c_name, toAdd, text) { //the first element isn't a node
+    //---- creates a div for the each of the search page items ----------------
+    function createDiv(ident, c_name, toAdd, text) { 
         let div = document.createElement('div');
         div.className = c_name;
         div.id = ident;
         console.log(toAdd);
         document.getElementById(toAdd).appendChild(div);
-        //add the text you want to show
+
+        //---- adds the text you want to show
         div.textContent = text;
         console.log(div);
     }
+
+    //---- creates the div which all the search information will fall into  ------------------
     function motherDiv() {
         $('.searchResults').remove();
         $('.searchBkInfo').remove();
@@ -216,30 +263,26 @@ $(document).ready(function () {
             let mother = document.createElement('div');
             mother.className = 'searchResults';
             console.log('activated');
+
+            //---- unique id so all the information doesn't go into the same place
             mother.id = arrSearch[i]._id;
             console.log(mother.id);
-            document.querySelector('#searchPg').appendChild(mother); //create a way to wrap here
+            document.querySelector('#searchPg').appendChild(mother);
             displaySearch(arrSearch[i], mother.id);
         }
     }
-    // function searchHolder(search, mother) {
-    //     var uniqueId = JSON.stringify(Math.floor(Math.random() * 10000));
-    //     let holder = document.createElement('div');
-    //     holder.className = 'searchBkInfo';
-    //     holder.id = uniqueId;
-    //     console.log(holder.id);
-    //     document.getElementById(mother).appendChild(holder); //create a way to wrap here
-    //     displaySearch(search, holder.id);
-    // }
-    function displaySearch(search, motherDiv) { //displays player input
-        //create parent div
+
+    
+    //---- displays what the user has put in the search bar  ------------------
+    function displaySearch(search, motherDiv) { 
         var specObj = search;
         var nameBook = firstLetterUpper(specObj.bookName); //create a way to show this
         var writtenBy = firstLetterUpper(specObj.author);
-        // Left side
+
+        //---- Left side
         createDiv('frontCover', 'searchBkInfo', motherDiv, '');
-        // Right side
-        let search_details = document.createElement("div");
+        //---- Right side
+        let search_details = document.createElement("div"); //creating div for all data
         search_details.classList.add("searchBkInfo");
         search_details.innerHTML = `
             <p class="">${nameBook}</p>
@@ -248,7 +291,9 @@ $(document).ready(function () {
             <p>${specObj.reviewer}</p>
         `;
 
+        //---- appends it to the different mother divs
         document.getElementById(motherDiv).appendChild(search_details);
+
 
         // createDiv('searchTitle', 'searchBkInfo', motherDiv, nameBook); //creates title
         // createDiv('searchauthor', 'searchBkInfo', motherDiv, writtenBy); //author
@@ -257,9 +302,15 @@ $(document).ready(function () {
         //createDiv('otherUserPfp', 'circle', '#otherPfp', '');
     }
 
+
+    //---- creates an object for the review a user creates  ------------------
     function createReview() {
-        //var image = ""; //preview unavailable
+        //var image = ""; //TODO: preview unavailable
+
+        //---- checks what radio button was clicked
         var bookStars = $('input[name="rate"]:checked').val();
+
+        //---- used to find the rating based on radio button
         var rating = 0;
         switch (bookStars) {
             case "1":
@@ -277,6 +328,8 @@ $(document).ready(function () {
             default:
                 rating = 5;
         }
+
+        //---- creates an object for the book review to add to the user database 
         var bookData = {
             "bookName": $('#bookName').val().toLowerCase(), //go straight to get the jquery
             "author": $('#bookAuthor').val(),
@@ -286,31 +339,51 @@ $(document).ready(function () {
             "reviewer": currentUser,
         }
         console.log(bookData);
+
+        //---- displays relevant error text if reqs are met
         if ($('#bookName').val() == "" || $('#bookAuthor').val() == "" || $('#bookRelease').val() == "") {
             $('.redText').show();
         } else {
             addBook(bookData, bookReviewUrl, '621d80b634fd621565858a79', arrBooks);
-            alert('Successfully Added');
+            alert('Successfully Added'); //---- lets user know that the addition worked
         }
         console.log(arrBooks);
     }
+
+
+    //---- turns search terms into an array of keywordsF --------------------------------
     function createKeywords(string, arr) {
-        string.toLowerCase();
+        //---- everything lowercase so it can match with bookName in DB
+        string.toLowerCase(); 
+
+        //---- pushes into  arr to search
         arr.push(string.split(" "));
         console.log(arr);
     }
+
+
+    //---- uses the keywords to find the book review which contains those words --------------
     function findIndexSearch(find) {
+        //---- arrays to search and store
         var keywords = [];
         arrSearch = [];
+
+        //---- filling keywords
         createKeywords(find, keywords);
+
+        //---- checking if title exists and adds to arrSearch
         var count = 0;
         while (count < arrBooks.length) {
-            var title = arrBooks[count].bookName; //we want to check through the length of the book array
-            console.log(title);
-            for (var i = 0; i <= keywords.length; i++) {
+            var title = arrBooks[count].bookName;
+            //console.log(title);
+
+            for (var i = 0; i < keywords.length; i++) {
+                //----checking if the keyword exists in each of the bookNames
                 var exist = title.indexOf(keywords[i]);
+
+                //---- if it exists push into arrSearch
                 if (exist != -1) {
-                    arrSearch.push(arrBooks[count]); //if the keyword exists then we add it to another array
+                    arrSearch.push(arrBooks[count]);
                     console.log(arrSearch);
                     motherDiv();
                 }
@@ -319,13 +392,17 @@ $(document).ready(function () {
         }
     }
 
-    function findSearchTerm() { //enter key
-        var searchTerm = $('#searchBar').val();
+
+    //---- quick way to check if the search term exists  ------------------
+    function findSearchTerm() { 
+        var searchTerm = $('#searchBar').val(); //text from search bar
         findIndexSearch(searchTerm);
         console.log(searchTerm);
     }
 
-    function firstLetterUpper(word) { //makes only the first letter upper case; useful for presenting books
+
+    //---- makes only the first letter upper case; useful for presenting books  ------------------
+    function firstLetterUpper(word) { 
         var str = word.toLowerCase();
         var arr = str.split(" ");
         for (var i = 0; i < arr.length; i++) {
@@ -336,7 +413,9 @@ $(document).ready(function () {
 
         return str2;
     }
+    
 
+    //---- allowing access to camera for scanning ------------------
     function accessCamera() {
         var video = document.querySelector("#videoElement");
 
@@ -351,7 +430,12 @@ $(document).ready(function () {
         }
     }
 
-    //calling functions and click handlers
+
+
+
+    //---- calling functions and click handlers--------------------------------------
+
+    //---- sign up page buttons -----------------------
     $('#saveFormalData').click(function () { //when continue is pressed
         saveData();
     });
@@ -359,28 +443,37 @@ $(document).ready(function () {
         console.log(jsonData);
         updateData(jsonData);
     })
-    //login
+
+    //---- login button -------------
     $('#findUserData').click(function () {
         login();
     });
-    //this is to save your book review data
+
+    //---- upload button; saves book review data ----------------
     $('#uploadReview').click(function () {
         createReview();
     })
 
+    //---- search button clicked
     $('#searchResBtn').click(function () {
         findSearchTerm();
     })
 
+    //---- barcode on taskbar
     $('#barcodeBtn').click(function () {
         accessCamera();
         document.querySelector("#holdsCam").classList.remove("hidden");
         document.querySelector("#scannerBtn").classList.remove("hidden");
     })
+
+    //---- scan button on scan barcode page
     $("#scannerBtn").click(function () {
         alert('scanned!');
     });
+
+    //---- settings on personal page clicked
     $("#personalSettings").click(function () {
+        //---- checks whether the or not the popUp is showing
         if(document.querySelector("#logOutPopUp").classList.contains("hidden")){
             document.querySelector("#logOutPopUp").classList.remove("hidden");
         }else{
@@ -388,13 +481,17 @@ $(document).ready(function () {
         }
         
     });
+
+    //---- log out button
     $("#logOut").click(function () {
         currentUser = "";
         alert('loggedOut');
         jsonData = [];
         document.querySelector("#logOutPopUp").classList.add("hidden");
     });
-    //switching though pages
+
+
+    //---- switching though pages
     //switchPages('#loginBtn', '#loginPg');
     switchPages('#searchBtn', '#searchPg');
     switchPages('#uploadBtn', '#uploadPg');
@@ -402,6 +499,8 @@ $(document).ready(function () {
     switchPages('#homeBtn', '#comingSoon');
     switchPages('#barcodeBtn', '#scanPg');
     switchPages('#logOut', '#loginPg');
+
+
     $('#signUpBtn').click(function () {
         document.querySelectorAll(".pages").forEach((element) => {
             element.classList.add("hidden");
@@ -410,6 +509,8 @@ $(document).ready(function () {
         document.querySelector("#secondQs").classList.add("hidden");
         document.querySelector("#firstQs").classList.remove("hidden");
     });
+
+
     $('#loginBtn').click(function () {
         document.querySelectorAll(".pages").forEach((element) => {
             element.classList.add("hidden");
