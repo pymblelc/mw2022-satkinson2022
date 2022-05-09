@@ -1,0 +1,552 @@
+/*general styling ------------------------------------------------------------------------------------------------------ */
+body {
+    font-family: 'Trebuchet MS'
+}
+
+p {
+    margin: 0;
+}
+
+body,
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.middle {
+    display: flex;
+    justify-content: center;
+}
+
+.pages {
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.circle {
+    background-size: cover;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.screenDivs {
+    width: 400px;
+    height: 200px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.heading {
+    margin-bottom: 10%;
+}
+
+#phoneScreen {
+    width: 414px;
+    height: 97vh;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/*displaying pages*/
+.hidden {
+    display: none;
+}
+
+.redText {
+    font-size: 12px;
+    margin-top: -2%;
+    display: none;
+    color: red;
+    font-family: 'Trebuchet MS';
+
+}
+
+.buttons {
+    cursor: pointer;
+    border: none;
+    width: 50px;
+    height: 50px;
+    margin-left: 3%;
+    color: rgb(47, 196, 60);
+}
+
+
+
+/*login and sign up styling ------------------------------------------------------------------------------------------------------ */
+
+.part2 {
+    margin: 10px;
+}
+
+.likeLink {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+.stylingSignupLogin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.userInfo {
+    margin-bottom: 5%;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid rgb(47, 196, 60);
+    background-color: rgb(240, 244, 247);
+}
+
+.userBtnInfo {
+    border: none;
+    background-color: rgb(51, 122, 57);
+    width: 40%;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 10%;
+}
+
+.breakLine {
+    width: 50%;
+}
+
+#createBday {
+    border: none;
+    margin-top: 10%;
+    margin-bottom: -5%;
+    font-size: 14px;
+}
+
+
+
+/*taskbar styling ------------------------------------------------------------------------------------------------------ */
+#taskBar {
+    bottom: 0%;
+    position: absolute;
+    background-color: rgb(240, 240, 240);
+    width: 414px;
+    height: 33%;
+    border-top: solid rgb(212, 212, 212) 2px;
+    background-color: rgb(240, 240, 240);
+}
+
+#totalTaskBar {
+    bottom: 2%;
+    position: absolute;
+    width: 414px;
+    height: 30%;
+    z-index: 1;
+}
+
+.taskBarBtm {
+    z-index: 1;
+    bottom: 4%;
+    width: 160px;
+    height: 50px;
+    position: absolute;
+}
+
+#taskBarBtm1 {
+    float: left;
+}
+
+#taskBarBtm2 {
+    float: right;
+    margin-left: 63%;
+    width: 150px;
+}
+
+#barcodeBtn {
+    cursor: pointer;
+    height: 81px;
+    width: 81px;
+    border-radius: 50%;
+    font-size: 20px;
+    bottom: 0%;
+    position: absolute;
+    margin-left: -8%;
+    background-color: rgb(126, 226, 126);
+    color: rgb(255, 255, 255);
+
+}
+
+#searchBtn {
+    float: right;
+    margin-right: 8%;
+}
+
+#homeBtn {
+    float: left;
+    margin-left: 9%;
+}
+
+#userBtn {
+    float: right;
+    margin-right: 10%
+}
+
+
+
+/*upload review styling ------------------------------------------------------------------------------------------------------ */
+#uploadReview {
+    z-index: 2;
+    position: absolute;
+    margin-top: 70%;
+    margin-left: -65%;
+}
+
+.uploadWords {
+    font-size: 13px;
+}
+
+.uploadTags {
+    float: left;
+    margin-top: 3%;
+    margin-left: 3%;
+}
+
+.undoneAst {
+    position: absolute;
+}
+
+.nextToEachOther {
+    width: 150px;
+    height: 20px;
+    float: left;
+    position: relative;
+    font-size: 2px;
+    margin-bottom: 10%;
+    margin-right: 10%;
+    margin-left: 8%;
+}
+
+.bookInfo {
+    margin-bottom: 4%;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid rgb(47, 196, 60);
+    background-color: rgb(240, 244, 247);
+}
+
+#imgUpload {
+    width: 150px;
+    height: 200px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: rgb(22, 133, 11);
+    float: left;
+    margin-top: 8%;
+    margin-left: 5%;
+}
+
+#uploadPg {
+    margin-top: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#uploadInputs {
+    margin-top: 8%;
+    position: relative;
+}
+
+#releaseAndRating {
+    width: 400px;
+}
+
+#bookOpinion {
+    resize: none;
+    height: 130px;
+}
+
+#opinionPg {
+    text-align: left;
+    margin-top: 5%;
+    float: left;
+    width: 350px;
+    margin-left: 10%
+}
+
+#bookRelease {
+    margin-bottom: -10%
+}
+
+
+
+/*search page styling ------------------------------------------------------------------------------------------------------ */
+#searchPg {
+    width: 100%;
+}
+
+#searchResBtn {
+    width: 15%;
+    margin-left: 2%;
+}
+
+#topResults {
+    width: 100%;
+}
+
+#searchBarDiv {
+    height: 10%;
+    width: 100%;
+    background-color: rgb(219, 222, 224);
+}
+
+#searchBar {
+    width: 75%;
+    height: 25px;
+    margin-top: 8%;
+    margin-bottom: 5%;
+    border: none;
+    border-radius: 5px;
+}
+
+#resultText {
+    float: left;
+    width: 414px;
+    text-align: left;
+    margin-top: 3%;
+    margin-left: 5%;
+}
+
+.cut-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#frontCover {
+    width: 80px;
+    height: 110px;
+    background-color: green;
+    margin-top: 7%;
+    margin-left: 5%;
+}
+
+.searchResults {
+    align-items: left;
+    text-align: left;
+    width: 414px;
+    height: 180px;
+    border-top: 1px solid rgb(87, 87, 87);
+}
+
+.searchBkInfo {
+    margin-top: 7%;
+    float: left;
+    width: 200px;
+    height: 120px;
+    margin-left: 5%;
+}
+
+#searchTitle {
+    font-size: 15px;
+    margin-left: 5%;
+    margin-top: 8%;
+    font-size: 15px;
+    font-family: 'Trebuchet MS'
+}
+
+#searchauthor {
+    margin-top: 13%;
+    margin-left: -18%;
+    font-size: 13px;
+    position: relative;
+    font-family: 'Trebuchet MS'
+}
+
+#teaserText {
+    margin-top: 2%;
+    margin-left: 5%;
+    width: 200px;
+    height: 40px;
+    font-size: 12px;
+    text-align: left;
+    font-family: 'Trebuchet MS';
+}
+
+#otherPfp {
+    width: 150px;
+    height: 20px;
+    background-color: antiquewhite;
+}
+
+#otherUserPfp {
+    background-color: aqua;
+    width: 20px;
+    height: 20px;
+}
+
+#otherUsername {
+    margin-top: 5%;
+    margin-right: -45%;
+    font-family: "Trebuchet MS";
+}
+
+
+
+/*personal page ------------------------------------------------------------------------------------------------------ */
+#personalPg {
+    margin-top: -20%;
+}
+
+#logOutPopUp {
+    width: 200px;
+    height: 150px;
+    background-color: rgb(202, 202, 202);
+}
+
+#logOut {
+    width: 100px;
+    height: 50px;
+    margin-top: 10%;
+}
+
+.profilePics {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    margin-top: 10%;
+    background-color: rgb(47, 196, 60);
+    border: none;
+}
+
+.fllwpos {
+    margin-top: 5%;
+    margin-bottom: -10%;
+    font-size: 20px;
+    color: black;
+}
+
+.fllwWord {
+    margin-top: 1%;
+    color: rgb(143, 138, 138);
+}
+
+#sfcProfilePic {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png');
+    background-color: rgb(58, 57, 57);
+    height: 130px;
+    width: 130px;
+    margin-left: auto;
+    margin-right: 10%;
+    margin-top: 5%;
+}
+
+.personalInfo {
+    margin-left: 10%;
+    width: 40%;
+    text-align: left;
+    float: left;
+    margin-top: 50px;
+}
+
+#personalSettings {
+    height: 30px;
+    width: 30px;
+    margin-left: auto;
+    margin-right: 3%;
+    margin-top: 10%;
+}
+
+#bottomPrsnl {
+    width: 414px;
+    height: 430px;
+    bottom: 8%;
+}
+
+#followBar {
+    margin-top: 10%;
+    height: 50px;
+    width: 414px;
+    bottom: 68%;
+    background-color: white;
+}
+
+.followingList {
+    margin-top: 50%;
+}
+
+#showCasedBtns {
+    background-color: rgb(183, 235, 183);
+    height: 50px;
+    border-top: rgb(118, 209, 171) 2px solid;
+    border-bottom: rgb(118, 209, 171) 2px solid;
+}
+
+.showcased {
+    margin-top: 4%;
+    cursor: pointer;
+    border: none;
+    display: relative;
+    margin-left: auto;
+    margin-right: 100%;
+    background-color: rgb(183, 235, 183);
+    margin-right: 5%;
+    margin-left: 5%;
+}
+
+#setName {
+    width: 50%;
+    height: 30px;
+    margin-top: 0%;
+}
+
+#setFirstName {
+    float: left;
+    margin-right: 8%;
+}
+
+#setUserName {
+    font-weight: 900;
+}
+
+.followingLst {
+    cursor: pointer;
+    border: none;
+    width: 100px;
+    height: 50px;
+    margin-left: 8%;
+    margin-right: 8%;
+    background-color: white;
+    font-weight: 500;
+}
+
+#yourPosts {
+    margin-left: 3%;
+}
+
+/*home page style*/
+#homePg {
+    width: 414px;
+    height: 97vh;
+}
+
+#holdsCam {
+    margin: 0px auto;
+    width: 50%;
+    margin-top: 30%;
+    border: black 5px #333 solid;
+}
+
+#videoElement {
+    width: 100%;
+    background-color: #666;
+}
+
+#scannerBtn {
+    width: 100px;
+}
