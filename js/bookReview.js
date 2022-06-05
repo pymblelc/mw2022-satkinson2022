@@ -184,7 +184,7 @@ $(document).ready(function () { //makes sure the document is always ready
         //--- setting personal details on the screen
         setPersonalPage();
 
-        
+
         document.querySelector("#personalPg").classList.remove("hidden"); //---showing personal page
         document.querySelector("#totalTaskBar").classList.remove("hidden"); //---showing task bar
         document.querySelector('#signUpPg').classList.add("hidden"); //hiding sign up q's
@@ -199,7 +199,7 @@ $(document).ready(function () { //makes sure the document is always ready
         var password = $('#enterPassword').val();
         //console.log(arrUsers);
 
-        
+
         var found = false; //---- find if user exists
         //---- loop over arrUsers to find correct user and password
         for (var i = 0; i <= arrUsers.length - 1; i++) {
@@ -291,11 +291,13 @@ $(document).ready(function () { //makes sure the document is always ready
             <p class="">${nameBook}</p>
             <p>${writtenBy}</p>
             <p class="cut-text">${specObj.wordedRating}</p>
-            <button id="toUsersPg">${specObj.reviewer}</button>
+            <button class="toUsersPg">${specObj.reviewer}</button>
         `;
 
         //---- appends it to the different mother divs
         document.getElementById(motherDiv).appendChild(search_details);
+        
+        switchPages('.toUsersPg', '#otherUserPg');
     }
 
     function follow() {
@@ -435,10 +437,10 @@ $(document).ready(function () { //makes sure the document is always ready
         return str2;
     }
 
-    
+
 
     //---- allowing access to camera for scanning ------------------
-    function accessCamera() {
+    /*function accessCamera() {
         var video = document.querySelector("#videoElement");
 
         if (navigator.mediaDevices.getUserMedia) {
@@ -450,7 +452,27 @@ $(document).ready(function () { //makes sure the document is always ready
                     console.log("Something went wrong!");
                 });
         }
+    }*/
+
+    function onScanSuccess(decodedText, decodedResult) {
+        // handle the scanned code as you like, for example:
+        console.log(`Code matched = ${decodedText}`, decodedResult);
     }
+
+    function onScanFailure(error) {
+        // handle scan failure, usually better to ignore and keep scanning.
+        // for example:
+        console.warn(`Code scan error = ${error}`);
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "bcreader",
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        verbose = false
+    );
+    
+
+
 
     //---- checking scanner button exists ----------------------------
 
@@ -484,15 +506,11 @@ $(document).ready(function () { //makes sure the document is always ready
 
     //---- barcode on taskbar
     $('#barcodeBtn').click(function () {
-        accessCamera();
-        document.querySelector("#holdsCam").classList.remove("hidden");
-        document.querySelector("#scannerBtn").classList.remove("hidden");
+        // accessCamera();
+        document.querySelector("#scanPg").classList.remove("hidden");
+        document.querySelector("#bcreader").classList.remove("hidden");
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     })
-
-    //---- scan button on scan barcode page
-    $("#scannerBtn").click(function () {
-        alert('scanned!');
-    });
 
     //---- settings on personal page clicked
     $("#personalSettings").click(function () {
@@ -522,8 +540,6 @@ $(document).ready(function () { //makes sure the document is always ready
     switchPages('#homeBtn', '#comingSoon');
     switchPages('#barcodeBtn', '#scanPg');
     switchPages('#logOut', '#loginPg');
-    // COME BACK HERE
-    switchPages('#toUsersPg','#otherUserPg');
 
     $('#signUpBtn').click(function () {
         document.querySelectorAll(".pages").forEach((element) => {
