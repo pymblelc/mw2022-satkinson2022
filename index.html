@@ -140,7 +140,11 @@
                     <h2>Upload</h2>
                     <div id="imgUpload">
                         <image></image>Image goes here
+                        <p class="uploadTags">
+                            Barcode Id: <input id="barcodeId"> <!-- this is in the way-->
+                        </p>
                     </div>
+
                     <div id="uploadInputs">
                         <div class="uploadTags">
                             <p class="uploadWords">
@@ -181,6 +185,7 @@
                             Opinion: <textarea class="bookInfo" id="bookOpinion" cols="40"></textarea>
                             <br>
                         </p>
+
 
                         <button class='userBtnInfo' id="uploadReview">Upload</button>
                     </div>
@@ -246,7 +251,6 @@
             <div id="bottomPrsnl">
                 <div id="showCasedBtns">
                     <button class="showcased" id="yourPosts">YOUR POSTS</button>
-                    <button class="showcased" id="mostLiked">MOST LIKED</button>
                     <button class="showcased hidden" id="likedPosts">LIKED</button>
                 </div>
                 <div class="bookCover">
@@ -270,9 +274,56 @@
         </div>
 
 
-        <!-- coming soon pages -->
+        <!-- home Page --> 
         <div class="hidden pages center" id="comingSoon">
-            <p>THIS PAGE IS COMING SOON</p>
+            <div class="homeResults">
+                <div class="bookCover homeBook"></div>
+                <div id="homeInfo">
+                    <p class="searchBkInfo title" id="hometitle">Title</p>
+                    <p class="searchBkInfo author" id="homeauthor">Author</p>
+                    <div class="searchBkInfo rating" id="homeRatings"></div>
+                    <p class="searchBkInfo bio" id="homeText">Bio</p><br>
+                    <div class="searchBkInfo pfp" id="pfpID">
+                        <div class="circle" id="otherUserPfpID"></div>
+                        <p id="otherUsernameID">Username</p>
+                    </div><br>
+                </div>
+            </div>
+        </div>
+
+        <!-- other users pages ------------------------------------->
+        <div class="hidden pages center" id="otherUserPg">
+            <div style="width:100%">
+                <div class="Info">
+                    <!--<div class="shownPersonal">
+                        <p>USERNAME</p>
+                    </div>
+                    <div class="shownPersonal" id="setName">
+                        <div class="next">first</div>
+                        <div class="next" id="setSurname">surname</div>
+                    </div>
+                    <div class="shownPersonal" id="userBio">BIO</div>
+                </div>
+                <div class="circle" id="sfcProfilePic">
+                </div>
+            </div>
+            <div id="followBar">
+                <button class="followingLst" id="fllwing">
+                    <p class="fllwpos" id="ttlFllwing">0</p><br>
+                    <p class="fllwWord">Following</p>
+                </button>
+                <button class="followingLst" id="fllws">
+                    <p class="fllwpos" id="ttlFllw">0</p><br>
+                    <p class="fllwWord">Followers</p>
+                </button>
+            </div>
+
+            <div id="showCased">
+                <div class="bookCover">
+                    <image>THIS IS A BOOK</image>
+                </div> -->
+            </div>
+        </div>
         </div>
 
         <script type="text/javascript" src="js/bookReview.js"></script>

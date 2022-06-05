@@ -20,7 +20,7 @@ body,
     justify-content: center;
 }
 
-.pages {
+.pages { 
     flex-direction: column;
     height: 100%;
     overflow-y: auto;
@@ -396,7 +396,119 @@ body,
     font-family: "Trebuchet MS";
 }
 
+#toUsersPg{
+    cursor: pointer;
+}
+/*home page ---------------------------------------------------------------------------------------------------------- */
+#searchPg {
+    width: 100%;
+}
 
+#searchResBtn {
+    width: 15%;
+    margin-left: 2%;
+}
+
+#topResults {
+    width: 100%;
+}
+
+#searchBarDiv {
+    height: 10%;
+    width: 100%;
+    background-color: rgb(219, 222, 224);
+}
+
+#searchBar {
+    width: 75%;
+    height: 25px;
+    margin-top: 8%;
+    margin-bottom: 5%;
+    border: none;
+    border-radius: 5px;
+}
+
+#resultText {
+    float: left;
+    width: 414px;
+    text-align: left;
+    margin-top: 3%;
+    margin-left: 5%;
+}
+
+.cut-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#frontCover {
+    width: 80px;
+    height: 110px;
+    background-color: green;
+    margin-top: 7%;
+    margin-left: 5%;
+}
+
+.searchResults {
+    align-items: left;
+    text-align: left;
+    width: 414px;
+    height: 180px;
+    border-top: 1px solid rgb(87, 87, 87);
+}
+
+.searchBkInfo {
+    margin-top: 7%;
+    float: left;
+    width: 200px;
+    height: 120px;
+    margin-left: 5%;
+}
+
+#searchTitle {
+    font-size: 15px;
+    margin-left: 5%;
+    margin-top: 8%;
+    font-size: 15px;
+    font-family: 'Trebuchet MS'
+}
+
+#searchauthor {
+    margin-top: 13%;
+    margin-left: -18%;
+    font-size: 13px;
+    position: relative;
+    font-family: 'Trebuchet MS'
+}
+
+#teaserText {
+    margin-top: 2%;
+    margin-left: 5%;
+    width: 200px;
+    height: 40px;
+    font-size: 12px;
+    text-align: left;
+    font-family: 'Trebuchet MS';
+}
+
+#otherPfp {
+    width: 150px;
+    height: 20px;
+    background-color: antiquewhite;
+}
+
+#otherUserPfp {
+    background-color: aqua;
+    width: 20px;
+    height: 20px;
+}
+
+#otherUsername {
+    margin-top: 5%;
+    margin-right: -45%;
+    font-family: "Trebuchet MS";
+}
 
 /*personal page ------------------------------------------------------------------------------------------------------ */
 #personalPg {
