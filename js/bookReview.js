@@ -184,6 +184,7 @@ $(document).ready(function () { //makes sure the document is always ready
         //--- setting personal details on the screen
         setPersonalPage();
 
+        
         document.querySelector("#personalPg").classList.remove("hidden"); //---showing personal page
         document.querySelector("#totalTaskBar").classList.remove("hidden"); //---showing task bar
         document.querySelector('#signUpPg').classList.add("hidden"); //hiding sign up q's
@@ -198,6 +199,7 @@ $(document).ready(function () { //makes sure the document is always ready
         var password = $('#enterPassword').val();
         //console.log(arrUsers);
 
+        
         var found = false; //---- find if user exists
         //---- loop over arrUsers to find correct user and password
         for (var i = 0; i <= arrUsers.length - 1; i++) {
@@ -433,6 +435,7 @@ $(document).ready(function () { //makes sure the document is always ready
         return str2;
     }
 
+    
 
     //---- allowing access to camera for scanning ------------------
     function accessCamera() {
@@ -519,6 +522,7 @@ $(document).ready(function () { //makes sure the document is always ready
     switchPages('#homeBtn', '#comingSoon');
     switchPages('#barcodeBtn', '#scanPg');
     switchPages('#logOut', '#loginPg');
+    // COME BACK HERE
     switchPages('#toUsersPg','#otherUserPg');
 
     $('#signUpBtn').click(function () {
