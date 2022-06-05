@@ -107,7 +107,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
     //----- switching between pages based on button clicked ------------
     function switchPages(button, page) {
-        $(button).click(function () { 
+        $(button).click(function () {
             document.querySelectorAll(".pages").forEach((element) => {
                 element.classList.add("hidden");
             });
@@ -129,7 +129,7 @@ $(document).ready(function () { //makes sure the document is always ready
         var surname = '';
 
         //----- creates an object which will be used to add new users to the database ------------
-        jsonData = {  
+        jsonData = {
             "username": username,
             "password": password,
             "firstName": firstName,
@@ -183,7 +183,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
         //--- setting personal details on the screen
         setPersonalPage();
-        
+
         document.querySelector("#personalPg").classList.remove("hidden"); //---showing personal page
         document.querySelector("#totalTaskBar").classList.remove("hidden"); //---showing task bar
         document.querySelector('#signUpPg').classList.add("hidden"); //hiding sign up q's
@@ -197,7 +197,7 @@ $(document).ready(function () { //makes sure the document is always ready
         var username = $('#enterUsername').val();
         var password = $('#enterPassword').val();
         //console.log(arrUsers);
-        
+
         var found = false; //---- find if user exists
         //---- loop over arrUsers to find correct user and password
         for (var i = 0; i <= arrUsers.length - 1; i++) {
@@ -227,7 +227,7 @@ $(document).ready(function () { //makes sure the document is always ready
     //---- used to set the personal page details --------------
     function setPersonalPage() { //TODO: fix this, not working with sign up
         //---- displays users username
-        $('#setUserName').html(currentUser); 
+        $('#setUserName').html(currentUser);
 
         //---- loops over arrUsers to display correct details
         for (var i = 0; i < arrUsers.length; i++) {
@@ -242,7 +242,7 @@ $(document).ready(function () { //makes sure the document is always ready
     }
 
     //---- creates a div for the each of the search page items ----------------
-    function createDiv(ident, c_name, toAdd, text) { 
+    function createDiv(ident, c_name, toAdd, text) {
         let div = document.createElement('div');
         div.className = c_name;
         div.id = ident;
@@ -272,9 +272,9 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
-    
+
     //---- displays what the user has put in the search bar  ------------------
-    function displaySearch(search, motherDiv) { 
+    function displaySearch(search, motherDiv) {
         var specObj = search;
         var nameBook = firstLetterUpper(specObj.bookName); //create a way to show this
         var writtenBy = firstLetterUpper(specObj.author);
@@ -282,27 +282,45 @@ $(document).ready(function () { //makes sure the document is always ready
         //---- Left side
         createDiv('frontCover', 'searchBkInfo', motherDiv, '');
         //---- Right side
+        //TO DO: make the search term found bold
         let search_details = document.createElement("div"); //creating div for all data
         search_details.classList.add("searchBkInfo");
         search_details.innerHTML = `
             <p class="">${nameBook}</p>
             <p>${writtenBy}</p>
             <p class="cut-text">${specObj.wordedRating}</p>
-            <p>${specObj.reviewer}</p>
+            <button id="toUsersPg">${specObj.reviewer}</button>
         `;
 
         //---- appends it to the different mother divs
         document.getElementById(motherDiv).appendChild(search_details);
-
-
-        // createDiv('searchTitle', 'searchBkInfo', motherDiv, nameBook); //creates title
-        // createDiv('searchauthor', 'searchBkInfo', motherDiv, writtenBy); //author
-        // createDiv('teaserText', 'searchBkInfo', motherDiv, specObj.wordedRating); //teaserText
-        // createDiv('otherPfp', 'searchBkInfo', motherDiv, specObj.reviewer); //usersPfp
-        //createDiv('otherUserPfp', 'circle', '#otherPfp', '');
     }
 
+    function follow() {
+        //something is clicked, thier page comes up
+    }
 
+    function displayHome(date, motherDiv) {
+        var specObj = '';//the name of the user they are following and their most recent post
+        var nameBook = firstLetterUpper(specObj.bookName); //create a way to show this
+        var writtenBy = firstLetterUpper(specObj.author);
+
+        createDiv('frontCover', 'searchBkInfo', motherDiv, '');
+        //---- Right side
+
+        let search_details = document.createElement("div"); //creating div for all data
+
+        search_details.classList.add("searchBkInfo");
+        search_details.innerHTML = `
+            <p class="">${nameBook}</p>
+            <p>${writtenBy}</p>
+            <p class="cut-text">${specObj.wordedRating}</p>
+            <p class="toUsersPg">${specObj.reviewer}</p> 
+        `; //add a class to the reviewer
+
+        //---- appends it to the different mother divs
+        document.getElementById(motherDiv).appendChild(search_details);
+    }
     //---- creates an object for the review a user creates  ------------------
     function createReview() {
         //var image = ""; //TODO: preview unavailable
@@ -337,6 +355,7 @@ $(document).ready(function () { //makes sure the document is always ready
             "releaseDate": $('#bookRelease').val(),
             "wordedRating": $('#bookOpinion').val(),
             "reviewer": currentUser,
+            "barcodeNumber": $('#barcodeId').val(),
         }
         console.log(bookData);
 
@@ -354,7 +373,7 @@ $(document).ready(function () { //makes sure the document is always ready
     //---- turns search terms into an array of keywordsF --------------------------------
     function createKeywords(string, arr) {
         //---- everything lowercase so it can match with bookName in DB
-        string.toLowerCase(); 
+        string.toLowerCase();
 
         //---- pushes into  arr to search
         arr.push(string.split(" "));
@@ -394,7 +413,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
 
     //---- quick way to check if the search term exists  ------------------
-    function findSearchTerm() { 
+    function findSearchTerm() {
         var searchTerm = $('#searchBar').val(); //text from search bar
         findIndexSearch(searchTerm);
         console.log(searchTerm);
@@ -402,7 +421,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
 
     //---- makes only the first letter upper case; useful for presenting books  ------------------
-    function firstLetterUpper(word) { 
+    function firstLetterUpper(word) {
         var str = word.toLowerCase();
         var arr = str.split(" ");
         for (var i = 0; i < arr.length; i++) {
@@ -413,7 +432,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
         return str2;
     }
-    
+
 
     //---- allowing access to camera for scanning ------------------
     function accessCamera() {
@@ -430,6 +449,7 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
+    //---- checking scanner button exists ----------------------------
 
 
 
@@ -474,12 +494,12 @@ $(document).ready(function () { //makes sure the document is always ready
     //---- settings on personal page clicked
     $("#personalSettings").click(function () {
         //---- checks whether the or not the popUp is showing
-        if(document.querySelector("#logOutPopUp").classList.contains("hidden")){
+        if (document.querySelector("#logOutPopUp").classList.contains("hidden")) {
             document.querySelector("#logOutPopUp").classList.remove("hidden");
-        }else{
+        } else {
             document.querySelector("#logOutPopUp").classList.add("hidden");
         }
-        
+
     });
 
     //---- log out button
@@ -499,7 +519,7 @@ $(document).ready(function () { //makes sure the document is always ready
     switchPages('#homeBtn', '#comingSoon');
     switchPages('#barcodeBtn', '#scanPg');
     switchPages('#logOut', '#loginPg');
-
+    switchPages('#toUsersPg','#otherUserPg');
 
     $('#signUpBtn').click(function () {
         document.querySelectorAll(".pages").forEach((element) => {
