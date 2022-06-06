@@ -1,11 +1,15 @@
-var apikey = '86aa5a2ffe2d7817c8b26ab6c94203bd7c2a7';
+var apikey = '621d80b634fd621565858a79';
 var bookReviewUrl = 'https://bookreviewdb-4d45.restdb.io/rest/bookreviews';
 var usersUrl = 'https://bookreviewdb-4d45.restdb.io/rest/bookusers';
+var fllwUrl = 'https://bookreviewdb-4d45.restdb.io/rest/followers';
 var arrUsers = [''];
 var arrBooks = [''];
+var arrFollow = [''];
 var arrSearch = [];
 var currentUser = '';
 var jsonData = [];
+var usersFollowing = [''];
+var usersFollowers = [''];
 
 
 //-----------------getting data--------------------------
@@ -49,9 +53,28 @@ function getUsers(url, apikey) {
     });
 }
 
+//---- gets follower/following data ----------------------
+function getFollowers(url, apikey) {
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": url,
+        "method": "GET",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        arrFollow = response;
+    });
+}
 
 //-----------------adding data--------------------------
-//----- gets user data----------------------------------
+//----- adds user data----------------------------------
 function addUser(item, url, apikey) {
     getUsers(url, apikey); //gets user data
     var settings = {
@@ -75,7 +98,7 @@ function addUser(item, url, apikey) {
 
 }
 
-//----- gets book review data----------------------------
+//----- adds book review data----------------------------
 function addBook(item, url, apikey) {
     getBooks(url, apikey);
     var settings = {
@@ -99,6 +122,29 @@ function addBook(item, url, apikey) {
 
 }
 
+//---- adds follower/following data ------------------------
+function addFollowing(item, url, apikey) {
+    getFollowers(url, apikey);
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": url,
+        "method": "POST",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        },
+        "processData": false,
+        "data": JSON.stringify(item)
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log('Item successfully added');
+        console.log(response);
+    });
+
+}
 
 $(document).ready(function () { //makes sure the document is always ready
     //----- gets data----------------------------
@@ -296,35 +342,11 @@ $(document).ready(function () { //makes sure the document is always ready
 
         //---- appends it to the different mother divs
         document.getElementById(motherDiv).appendChild(search_details);
-        
+
         switchPages('.toUsersPg', '#otherUserPg');
     }
 
-    function follow() {
-        //something is clicked, thier page comes up
-    }
 
-    function displayHome(date, motherDiv) {
-        var specObj = '';//the name of the user they are following and their most recent post
-        var nameBook = firstLetterUpper(specObj.bookName); //create a way to show this
-        var writtenBy = firstLetterUpper(specObj.author);
-
-        createDiv('frontCover', 'searchBkInfo', motherDiv, '');
-        //---- Right side
-
-        let search_details = document.createElement("div"); //creating div for all data
-
-        search_details.classList.add("searchBkInfo");
-        search_details.innerHTML = `
-            <p class="">${nameBook}</p>
-            <p>${writtenBy}</p>
-            <p class="cut-text">${specObj.wordedRating}</p>
-            <p class="toUsersPg">${specObj.reviewer}</p> 
-        `; //add a class to the reviewer
-
-        //---- appends it to the different mother divs
-        document.getElementById(motherDiv).appendChild(search_details);
-    }
     //---- creates an object for the review a user creates  ------------------
     function createReview() {
         //var image = ""; //TODO: preview unavailable
@@ -437,8 +459,56 @@ $(document).ready(function () { //makes sure the document is always ready
         return str2;
     }
 
+    //---- accessing someone's page -------------------------------
+    function findUser() {
+        //I need to take the name from the button
+        var specUser = document.getElementsByClassName("toUsersPg").innerHTML; //document.getElementById("myP").innerText, 
+        for (var i = 0; i <= arrUsers.length - 1; i++) {
+            //---- checking if the username already exists or if they left it blank  
+            if (arrUsers[i].specUser == specUser) {
+                found = true;
+            }
+        }
+        return specUser;
+    }
 
+    //---- displays the other users pages ---------------------------
+    function displayOther() {
+        var user = findUser();
+        //---- displays users username
+        $('#setName').html(user);
+        //---- loops over arrUsers to display correct details
+        for (var i = 0; i < arrUsers.length; i++) {
+            if (arrUsers[i].username == user) {
+                $('#setFirstName').html(arrUsers[i].firstName);
+                $('#setSurname').html(arrUsers[i].surname);
+                findFollowing();
+                //TODO: find whethere the user is following the person and display the right button
+                //TODO: find what books they have posted
+                //TODO: find the amount of followers the other user has
+            }
+        }
+    }
 
+    function findFollowing(){
+        getFollowers(fllwUrl, apikey);
+        //something current user
+        for (var i = 0; i < arrUsers.length; i++) {
+            if (arrFollow[i].follower ==  currentUser) {
+               usersFollowing.push(arrFollow[i].following);
+               console.log(usersFollowing); 
+            }
+
+        }
+    }
+
+    function follow(){
+
+    }
+
+    function unfollow(){
+        
+    }
     //---- allowing access to camera for scanning ------------------
     /*function accessCamera() {
         var video = document.querySelector("#videoElement");
@@ -470,7 +540,7 @@ $(document).ready(function () { //makes sure the document is always ready
         { fps: 10, qrbox: { width: 250, height: 250 } },
         verbose = false
     );
-    
+
 
 
 
