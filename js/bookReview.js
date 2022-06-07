@@ -503,26 +503,19 @@ $(document).ready(function () { //makes sure the document is always ready
     }
 
     function follow(){
-
+        //TODO: show the other button
+        addFollowing('', fllwUrl, apikey); //TODO: find what to put in here
     }
+
+    document.querySelector("#getStarted").addEventListener("click", (e) => { //TO DO: this doesn't work
+        follow();
+        
+    });
 
     function unfollow(){
-        
+        //TODO: show other button
+        //remove following
     }
-    //---- allowing access to camera for scanning ------------------
-    /*function accessCamera() {
-        var video = document.querySelector("#videoElement");
-
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                    video.srcObject = stream;
-                })
-                .catch(function (err0r) {
-                    console.log("Something went wrong!");
-                });
-        }
-    }*/
 
     function onScanSuccess(decodedText, decodedResult) {
         // handle the scanned code as you like, for example:
