@@ -235,10 +235,10 @@
                     </div>
                     <div class="shownPersonal" id="userBio">BIO</div>
                 </div>
-                <div class="circle" id="sfcProfilePic">
+                <div class="circle pfpLarge" id="sfcProfilePic">
                 </div>
             </div>
-            <div id="followBar">
+            <div class="followBar">
                 <button class="followingLst" id="perosonalFlwing">
                     <p class="fllwpos" id="ttlFllwing">0</p><br>
                     <p class="fllwWord">Following</p>
@@ -249,12 +249,12 @@
                 </button>
             </div>
 
-            <div id="bottomPrsnl">
+            <div class="bottomPrsnl">
                 <div id="showCasedBtns">
                     <button class="showcased" id="yourPosts">YOUR POSTS</button>
-                    <button class="showcased hidden" id="likedPosts">LIKED</button>
+                    <button class="showcased hidden" id="likedPosts">LIKED</button> 
                 </div>
-                <div class="bookCover">
+                <div class="books">
                     <image>THIS IS A BOOK</image>
                 </div>
             </div>
@@ -270,7 +270,6 @@
             <div class="hidden center" id="bcreader"></div>
             <!-- <button class="userBtnInfo hidden" id="scannerBtn">Scan</button> -->
         </div>
-
 
         <!-- home Page -->
         <div class="hidden pages center" id="comingSoon">
@@ -290,38 +289,40 @@
         </div>
 
         <!-- other users pages ------------------------------------->
-        <div class="hidden pages center" id="otherUserPg">
+        <div class="hidden pages" id="otherUserPg">
             <div style="width:100%">
-                <div class="Info">
-                    <div class="shownPersonal">
+                <div class="personalInfo">
+                    <div class="shownPersonal" id="otherPersonal">
                         <p>USERNAME</p>
                     </div>
-                    <div class="shownPersonal" id="setName">
-                        <div class="next">first</div>
-                        <div class="next" id="setSurname">surname</div>
+                    <div class="shownPersonal" id="otherName">
+                        <div class="next" id="otherFN">first</div>
+                        <div class="next" id="otherSN">surname</div>
                     </div>
-                    <div class="shownPersonal" id="userBio">BIO</div>
+                    <div class="shownPersonal" id="otherBio">BIO</div>
                 </div>
-                <div class="circle" id="sfcProfilePic">
+                <div class="circle pfpLarge" id="otherPfpLarge">
                 </div>
             </div>
-            <div id="followBar">
+            <div class="followBar" id="otherFollowBar">
                 <button class="followingLst" id="fllwing">
-                    <p class="fllwpos" id="ttlFllwing">0</p><br>
+                    <p class="fllwpos" id="otherTtlFllwing">0</p><br>
                     <p class="fllwWord">Following</p>
                 </button>
                 <button class="followingLst" id="fllws">
-                    <p class="fllwpos" id="ttlFllw">0</p><br>
+                    <p class="fllwpos" id="otherTtlFllwers">0</p><br>
                     <p class="fllwWord">Followers</p>
                 </button>
-                <button class="follow">Follow</button>
-                <button class="unfollow">Following</button>
+                <button id="follow">Follow</button>
+                <button class="hidden" id="unfollow">Following</button>
             </div>
 
-            <div id="showCased">
-                <div class="bookCover">
+            <div class="bottomPrsnl">
+                <div class id="showCasedBtns">
+                    <button class="showcased" id="yourPosts">POSTS</button>
+                </div>
+                <div class="books">
                     <image>THIS IS A BOOK</image>
-                </div> 
                 </div>
             </div>
         </div>

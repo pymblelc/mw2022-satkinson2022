@@ -10,7 +10,7 @@ var currentUser = '';
 var jsonData = [];
 var usersFollowing = [''];
 var usersFollowers = [''];
-
+var otherUserInfo = [];
 
 //-----------------getting data--------------------------
 //----- gets book review data ---------------------------
@@ -490,29 +490,48 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
-    function findFollowing(){
+    function findFollowing() {
         getFollowers(fllwUrl, apikey);
         //something current user
         for (var i = 0; i < arrUsers.length; i++) {
-            if (arrFollow[i].follower ==  currentUser) {
-               usersFollowing.push(arrFollow[i].following);
-               console.log(usersFollowing); 
+            if (arrFollow[i].follower == currentUser) {
+                usersFollowing.push(arrFollow[i].following);
+                console.log(usersFollowing);
             }
 
         }
     }
 
-    function follow(){
-        //TODO: show the other button
-        addFollowing('', fllwUrl, apikey); //TODO: find what to put in here
+    function findOtherUser(username) { //TO DO: set this to 
+        var lookingFor = username;
+        for (var i = 0; i <= arrUsers.length - 1; i++) {
+            //---- checking if the username already exists or if they left it blank  
+            if (arrUsers[i].username == lookingFor) {
+                found = true;
+                otherUserInfo = {
+                    "username": lookingFor,
+                    "firstName": arrUsers[i].firstName,
+                    "surname": arrUsers[i].surname,
+                    "followers": 0,
+                    "following": 0,
+                    "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
+                }
+            }
+        }
+        return otherUserInfo;
     }
 
-    document.querySelector("#getStarted").addEventListener("click", (e) => { //TO DO: this doesn't work
-        follow();
-        
-    });
+    function follow() {
+        //TODO: show the other button
+        var followData = {
+            "follower": currentUser,
+            "followed": '',
+        }
+        addFollowing(followData, fllwUrl, apikey); //TODO: find what to put in here
 
-    function unfollow(){
+    }
+
+    function unfollow() {
         //TODO: show other button
         //remove following
     }
