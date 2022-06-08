@@ -140,7 +140,7 @@ function addFollowing(item, url, apikey) {
     }
 
     $.ajax(settings).done(function (response) {
-        console.log('Item successfully added');
+        console.log('This user has been followed');
         console.log(response);
     });
 
@@ -289,6 +289,16 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
+    function setOtherPage(object) {
+        $('#otherPersonal').html(object.username);
+        $('#otherFN').html(object.firstName);
+        $('#otherSN').html(object.surname);
+        $('#otherSN').html(object.surname);
+        $('#otherTtlFllwing').html(object.following);
+        $('#otherTtlFllwers').html(object.followers);      
+        //TODO: find whether or not the user is following them to set the button
+    }
+
     //---- creates a div for the each of the search page items ----------------
     function createDiv(ident, c_name, toAdd, text) {
         let div = document.createElement('div');
@@ -344,8 +354,16 @@ $(document).ready(function () { //makes sure the document is always ready
         document.getElementById(motherDiv).appendChild(search_details);
 
         switchPages('.toUsersPg', '#otherUserPg');
+        $('.toUsersPg').click(function () { 
+            otherUserInfo = findOtherUser('.toUsersPg');
+            setOtherPage(otherUserInfo);
+            console.log(otherUserInfo);
+            $('#follow').click(function () { //START HERE - repeats continuously
+                follow(otherUserInfo.username); //this doesn't work
+            });
+        });
     }
-
+   
 
     //---- creates an object for the review a user creates  ------------------
     function createReview() {
@@ -502,30 +520,33 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
-    function findOtherUser(username) { //TO DO: set this to 
-        var lookingFor = username;
-        for (var i = 0; i <= arrUsers.length - 1; i++) {
-            //---- checking if the username already exists or if they left it blank  
-            if (arrUsers[i].username == lookingFor) {
-                found = true;
-                otherUserInfo = {
-                    "username": lookingFor,
-                    "firstName": arrUsers[i].firstName,
-                    "surname": arrUsers[i].surname,
-                    "followers": 0,
-                    "following": 0,
-                    "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
+    function findOtherUser(button) { //TO DO: set this to 
+        //need to take from the button
+        var notFound = true;
+        var lookingFor = document.querySelector(button).innerHTML;
+        while (notFound === true) {
+            for (var i = 0; i < arrUsers.length; i++) {
+                if (arrUsers[i].username == lookingFor) { //repeats for awhile
+                    notFound = false;
+                    otherUserInfo = {
+                        "username": lookingFor,
+                        "firstName": arrUsers[i].firstName,
+                        "surname": arrUsers[i].surname,
+                        "followers": 0, //TO DO: link this to the follower thing
+                        "following": 0,
+                        "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
+                    }
                 }
             }
         }
         return otherUserInfo;
     }
 
-    function follow() {
+    function follow(followed) {
         //TODO: show the other button
         var followData = {
             "follower": currentUser,
-            "followed": '',
+            "followed": followed,
         }
         addFollowing(followData, fllwUrl, apikey); //TODO: find what to put in here
 
