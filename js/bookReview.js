@@ -289,13 +289,15 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
+    //---- displays the other users pages ---------------------------
+
     function setOtherPage(object) {
         $('#otherPersonal').html(object.username);
         $('#otherFN').html(object.firstName);
         $('#otherSN').html(object.surname);
         $('#otherSN').html(object.surname);
         $('#otherTtlFllwing').html(object.following);
-        $('#otherTtlFllwers').html(object.followers);      
+        $('#otherTtlFllwers').html(object.followers);
         //TODO: find whether or not the user is following them to set the button
     }
 
@@ -354,16 +356,16 @@ $(document).ready(function () { //makes sure the document is always ready
         document.getElementById(motherDiv).appendChild(search_details);
 
         switchPages('.toUsersPg', '#otherUserPg');
-        $('.toUsersPg').click(function () { 
-            otherUserInfo = findOtherUser('.toUsersPg');
+        $('.toUsersPg').click(function () {
+            var otherUserInfo = findOtherUser(document.querySelector('.toUsersPg').innerHTML);
             setOtherPage(otherUserInfo);
-            console.log(otherUserInfo);
             $('#follow').click(function () { //START HERE - repeats continuously
-                follow(otherUserInfo.username); //this doesn't work
+                console.log('button clicked'); //loops continuously
+                follow(otherUserInfo.username);
             });
         });
     }
-   
+
 
     //---- creates an object for the review a user creates  ------------------
     function createReview() {
@@ -477,36 +479,6 @@ $(document).ready(function () { //makes sure the document is always ready
         return str2;
     }
 
-    //---- accessing someone's page -------------------------------
-    function findUser() {
-        //I need to take the name from the button
-        var specUser = document.getElementsByClassName("toUsersPg").innerHTML; //document.getElementById("myP").innerText, 
-        for (var i = 0; i <= arrUsers.length - 1; i++) {
-            //---- checking if the username already exists or if they left it blank  
-            if (arrUsers[i].specUser == specUser) {
-                found = true;
-            }
-        }
-        return specUser;
-    }
-
-    //---- displays the other users pages ---------------------------
-    function displayOther() {
-        var user = findUser();
-        //---- displays users username
-        $('#setName').html(user);
-        //---- loops over arrUsers to display correct details
-        for (var i = 0; i < arrUsers.length; i++) {
-            if (arrUsers[i].username == user) {
-                $('#setFirstName').html(arrUsers[i].firstName);
-                $('#setSurname').html(arrUsers[i].surname);
-                findFollowing();
-                //TODO: find whethere the user is following the person and display the right button
-                //TODO: find what books they have posted
-                //TODO: find the amount of followers the other user has
-            }
-        }
-    }
 
     function findFollowing() {
         getFollowers(fllwUrl, apikey);
@@ -520,33 +492,34 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
-    function findOtherUser(button) { //TO DO: set this to 
+    //---- accessing someone's page -------------------------------
+    function findOtherUser(lookingFor) { //TO DO: set this to 
         //need to take from the button
         var notFound = true;
-        var lookingFor = document.querySelector(button).innerHTML;
-        while (notFound === true) {
-            for (var i = 0; i < arrUsers.length; i++) {
-                if (arrUsers[i].username == lookingFor) { //repeats for awhile
-                    notFound = false;
-                    otherUserInfo = {
-                        "username": lookingFor,
-                        "firstName": arrUsers[i].firstName,
-                        "surname": arrUsers[i].surname,
-                        "followers": 0, //TO DO: link this to the follower thing
-                        "following": 0,
-                        "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
-                    }
+        var count = 0;
+        while (count < arrUsers.length && notFound === true) {
+            if (arrUsers[count].username == lookingFor) { //repeats for awhile
+                notFound = false;
+                otherUserInfo = {
+                    "username": lookingFor,
+                    "firstName": arrUsers[count].firstName,
+                    "surname": arrUsers[count].surname,
+                    "followers": 0, //TO DO: link this to the follower thing
+                    "following": 0,
+                    "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
                 }
             }
+            count++
         }
         return otherUserInfo;
     }
 
-    function follow(followed) {
+    function follow(beingFllw) {
+        var followed = findOtherUser(beingFllw);
         //TODO: show the other button
         var followData = {
             "follower": currentUser,
-            "followed": followed,
+            "followed": followed.username,
         }
         addFollowing(followData, fllwUrl, apikey); //TODO: find what to put in here
 
