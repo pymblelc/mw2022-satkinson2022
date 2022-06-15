@@ -146,6 +146,30 @@ function addFollowing(item, url, apikey) {
 
 }
 
+//---- putting followers -----------------------------------
+function updateFollowing(item) {
+    getUsers(usersUrl, item);
+    item.following += 1
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://bookreviewdb-4d45.restdb.io/rest/bookusers/" + item._id,
+        "method": "PUT",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        },
+        "processData": false,
+        "data": JSON.stringify(item)
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        console.log('updated');
+    });
+}
+
 $(document).ready(function () { //makes sure the document is always ready
     //----- gets data----------------------------
     getBooks(bookReviewUrl, '621d80b634fd621565858a79');
@@ -301,6 +325,18 @@ $(document).ready(function () { //makes sure the document is always ready
         //TODO: find whether or not the user is following them to set the button
     }
 
+    //---- update personal users following -----------
+
+
+    //---- update other users followers --------------
+    function updateFollowers(name) {
+        //get the user it is 
+        //update the following
+        var toBeFllw = findOtherUser(name);
+        updateFollowing(toBeFllw);
+        //add that to the database
+    }
+
     //---- creates a div for the each of the search page items ----------------
     function createDiv(ident, c_name, toAdd, text) {
         let div = document.createElement('div');
@@ -335,6 +371,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
     //---- displays what the user has put in the search bar  ------------------
     function displaySearch(search, motherDiv) {
+        console.log("Display search");
         var specObj = search;
         var nameBook = firstLetterUpper(specObj.bookName); //create a way to show this
         var writtenBy = firstLetterUpper(specObj.author);
@@ -356,12 +393,14 @@ $(document).ready(function () { //makes sure the document is always ready
         document.getElementById(motherDiv).appendChild(search_details);
 
         switchPages('.toUsersPg', '#otherUserPg');
-        $('.toUsersPg').click(function () {
-            var otherUserInfo = findOtherUser(document.querySelector('.toUsersPg').innerHTML);
+        // $('.toUsersPg').click(function () {
+        search_details.querySelector(".toUsersPg").addEventListener("click", function () {
+            var otherUserInfo = findOtherUser(search_details.querySelector('.toUsersPg').innerHTML);
             setOtherPage(otherUserInfo);
             $('#follow').click(function () { //START HERE - repeats continuously
                 console.log('button clicked'); //loops continuously
                 follow(otherUserInfo.username);
+                
             });
         });
     }
@@ -488,12 +527,14 @@ $(document).ready(function () { //makes sure the document is always ready
                 usersFollowing.push(arrFollow[i].following);
                 console.log(usersFollowing);
             }
-
         }
+
+        // for (const user of arrUsers) {
+        // }
     }
 
     //---- accessing someone's page -------------------------------
-    function findOtherUser(lookingFor) { //TO DO: set this to 
+    function findOtherUser(lookingFor) { //TO DO: set this to.... TO WHAT???
         //need to take from the button
         var notFound = true;
         var count = 0;
@@ -501,6 +542,7 @@ $(document).ready(function () { //makes sure the document is always ready
             if (arrUsers[count].username == lookingFor) { //repeats for awhile
                 notFound = false;
                 otherUserInfo = {
+                    "id": arrUsers[count]._id,
                     "username": lookingFor,
                     "firstName": arrUsers[count].firstName,
                     "surname": arrUsers[count].surname,
@@ -522,6 +564,9 @@ $(document).ready(function () { //makes sure the document is always ready
             "followed": followed.username,
         }
         addFollowing(followData, fllwUrl, apikey); //TODO: find what to put in here
+        updateFollowers(beingFllw);                
+        document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
+        document.querySelector("#follow").classList.add("hidden");
 
     }
 

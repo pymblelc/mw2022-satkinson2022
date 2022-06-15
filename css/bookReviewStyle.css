@@ -137,7 +137,7 @@ body,
     position: absolute;
     background-color: rgb(240, 240, 240);
     width: 414px;
-    height: 33%;
+    height: 100%;
     border-top: solid rgb(212, 212, 212) 2px;
     background-color: rgb(240, 240, 240);
 }
@@ -146,7 +146,8 @@ body,
     bottom: 2%;
     position: absolute;
     width: 414px;
-    height: 30%;
+    height: 9%;
+    overflow-y: visible;
     z-index: 1;
 }
 
@@ -396,7 +397,7 @@ body,
     font-family: "Trebuchet MS";
 }
 
-#toUsersPg{
+.toUsersPg{
     cursor: pointer;
 }
 /*home page ---------------------------------------------------------------------------------------------------------- */
