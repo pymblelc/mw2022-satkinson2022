@@ -140,20 +140,19 @@ function addFollowing(item, url, apikey) {
     }
 
     $.ajax(settings).done(function (response) {
-        console.log('This user has been followed');
+        console.log('This user has been followed'); //adds nothing to the database
         console.log(response);
     });
 
 }
 
 //---- putting followers -----------------------------------
-function updateFollowing(item) {
-    getUsers(usersUrl, item);
-    item.following += 1
+function updateFollowing(item, itemID) {
+    item.followers++; 
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "https://bookreviewdb-4d45.restdb.io/rest/bookusers/" + item._id,
+        "url": "https://bookreviewdb-4d45.restdb.io/rest/bookusers/" + itemID,
         "method": "PUT",
         "headers": {
             "content-type": "application/json",
@@ -174,7 +173,7 @@ $(document).ready(function () { //makes sure the document is always ready
     //----- gets data----------------------------
     getBooks(bookReviewUrl, '621d80b634fd621565858a79');
     getUsers(usersUrl, '621d80b634fd621565858a79');
-
+    getFollowers(fllwUrl, '621d80b634fd621565858a79');
     //----- switching between pages based on button clicked ------------
     function switchPages(button, page) {
         $(button).click(function () {
@@ -322,18 +321,35 @@ $(document).ready(function () { //makes sure the document is always ready
         $('#otherSN').html(object.surname);
         $('#otherTtlFllwing').html(object.following);
         $('#otherTtlFllwers').html(object.followers);
-        //TODO: find whether or not the user is following them to set the button
+        var userFollowing = checkIfFollow(currentUser, object.username);
+        if(userFollowing === true){
+            document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
+            document.querySelector("#follow").classList.add("hidden");
+        }else{
+            document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
+            document.querySelector("#follow").classList.remove("hidden");
+        }
     }
-
-    //---- update personal users following -----------
-
+    
+    //---- check if following -----------
+    function checkIfFollow(user, otherUser) { //this will be useful when displaying if another person is following maybe
+        //find the other username from the page
+        var followed = false;
+        for (var i = 0; i <= arrFollow.length - 1; i++) {
+            if (user == arrFollow[i].follower && otherUser == arrFollow[i].followed && followed === false) {
+                followed = true;
+            }
+        }
+        return followed;
+    }
 
     //---- update other users followers --------------
     function updateFollowers(name) {
         //get the user it is 
         //update the following
         var toBeFllw = findOtherUser(name);
-        updateFollowing(toBeFllw);
+        var itemID = toBeFllw.id;
+        updateFollowing(toBeFllw, itemID);
         //add that to the database
     }
 
@@ -391,7 +407,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
         //---- appends it to the different mother divs
         document.getElementById(motherDiv).appendChild(search_details);
-
+        //switchPages(); //
         switchPages('.toUsersPg', '#otherUserPg');
         // $('.toUsersPg').click(function () {
         search_details.querySelector(".toUsersPg").addEventListener("click", function () {
@@ -400,7 +416,6 @@ $(document).ready(function () { //makes sure the document is always ready
             $('#follow').click(function () { //START HERE - repeats continuously
                 console.log('button clicked'); //loops continuously
                 follow(otherUserInfo.username);
-                
             });
         });
     }
@@ -544,10 +559,11 @@ $(document).ready(function () { //makes sure the document is always ready
                 otherUserInfo = {
                     "id": arrUsers[count]._id,
                     "username": lookingFor,
+                    "password": arrUsers[count].password,
                     "firstName": arrUsers[count].firstName,
                     "surname": arrUsers[count].surname,
-                    "followers": 0, //TO DO: link this to the follower thing
-                    "following": 0,
+                    "followers": arrUsers[count].followers, 
+                    "following": arrUsers[count].following,
                     "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
                 }
             }
@@ -564,7 +580,7 @@ $(document).ready(function () { //makes sure the document is always ready
             "followed": followed.username,
         }
         addFollowing(followData, fllwUrl, apikey); //TODO: find what to put in here
-        updateFollowers(beingFllw);                
+        updateFollowers(beingFllw);
         document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
         document.querySelector("#follow").classList.add("hidden");
 

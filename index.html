@@ -326,6 +326,65 @@
                 </div>
             </div>
         </div>
+        <!-- the full review -->
+        <div class="hidden pages" id="otherUserPg">
+            <div style="width:100%">
+                <div class="center">
+                    <div>
+                        <h2>Upload</h2>
+                        <div id="revBookCoverId">
+                            <image></image>Image goes here
+                        </div>
+                        <!-- this will go underneath the image-->
+                        <p id="barcodeNumber">
+                            Barcode Id:
+                        </p>
+                        <div id="reviewInfor">
+                            <div class="uploadTags">Title:
+
+                            </div>
+                            <input class="bookInfo" id="bookName" placeholder="Book Name"><br>
+                            <div class="uploadTags">
+                                <p class="uploadWords">
+                                <p class="redText undoneAst">*</p>Author:
+                                </p>
+                            </div>
+                            <input class="bookInfo" id="bookAuthor" placeholder="Author"><br>
+                            <div class="uploadTags">
+                                <p class="uploadWords">Recommended Age:</p>
+                            </div>
+                            <input class="bookInfo" id="bookAgeReq" type="number" placeholder="Recommended Age"><br>
+                            <div id="releaseAndRating">
+                                <p class="redText undoneAst">*</p>
+                                <div class="nextToEachOther uploadTags">
+                                    <p class="uploadWords" id="relaseTag">Release:
+                                    </p><br>
+
+                                    <input type="date" class="bookInfo" id="bookRelease">
+                                </div>
+
+                                <div class="uploadTags">
+                                    <p class="uploadWords">Rating:
+                                    <p class="redText undoneAst">*</p> <br>
+                                    <input type="radio" name="rate" id="rate-1" value="1">
+                                    <input type="radio" name="rate" id="rate-2" value="2">
+                                    <input type="radio" name="rate" id="rate-3" value="3">
+                                    <input type="radio" name="rate" id="rate-4" value="4">
+                                    <input type="radio" name="rate" id="rate-5" value="5"></p>
+                                </div>
+                            </div>
+                            <p class="uploadTags uploadWords" id="opinionPg">
+                                Opinion: <textarea class="bookInfo" id="bookOpinion" cols="40"></textarea>
+                                <br>
+                            </p>
+
+
+                            <button class='userBtnInfo' id="uploadReview">Upload</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script type="text/javascript" src="js/bookReview.js"></script>
 </body>
