@@ -402,9 +402,66 @@ body,
 }
 /*home page ---------------------------------------------------------------------------------------------------------- */
 
+/*review page ---------------------------------------------------------------------------------------------------------- */
+#bookReviews{
+    width: 100%;
+    display: flex;
+    
+}
+#reviewTitle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    margin-bottom: -7%;
+}
+#reviewStars{
+}
+#bookRevTitle{
+}
+#reviewerName{
+    
+}
+#realBookInfo{
+    margin-top: 5%;
+    width:100%;
+    display: flex;
+    background-color: blueviolet;
+    height: 250px;
+}
+#coverAndCode{
+    width: 50%;
+    display: flex;
+    background-color: aqua;
+    height: 250px;
+    flex-direction: column;
+}
+#revBookCoverId{
+    width: 140px;
+    height: 200px;
+    background-color: green;
+    margin-left: 5%;
+}
+#barcodeNumber{
+    width:50%;
+}
+#revBookDeets{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+#theWordReview{
+    width: 100%;
+    background-color: blue;
+    height: 100vh;
+    display: flex;
+
+}
+
 /*other user pages --------------------------------------------------------------------------------------------------- */
 #otherUserPg{
     background-color: aqua;
+    width: 100%;
 }
 
 #otherFollowBar{

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trial</title>
+    <link rel="stylesheet" href="css/bookReviewStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    <script src="js/html5-qrcode.min.js"></script>
+</head>
+
+<body>
+    <div class="center" id="phoneScreen">
+        <div class="pages" id="totalTaskBar">
+            <div id="taskBar">
+                <button class="buttons notScanBtn" id="barcodeBtn">║║│║</button>
+            </div>
+            <div class="taskBarBtm" id="taskBarBtm1">
+                <button class="buttons notHomeBtn" id="homeBtn">
+                    <font size="6px">⌂</font>
+                </button>
+                <button class="buttons notHomeBtn" id="searchBtn">
+                    <font size="5px">🔍︎</font>
+                </button>
+            </div>
+            <div class="taskBarBtm" id="taskBarBtm2">
+                <button class="buttons notHomeBtn" id="uploadBtn">
+                    <font size="6px">+</font>
+                </button>
+                <button class="buttons notHomeBtn accountBtns" id="userBtn">User</button>
+            </div>
+        </div>
+        <div class="pages" id="bookReviews">
+            <div id="reviewTitle">
+                <h2 id="bookRevTitle">Book Name - </h2>
+                <h4 id="reviewerName">name name</h4>
+            </div>
+            <div id="reviewStars">5 stars</div>
+            <div id="realBookInfo">
+                <div id="coverAndCode">
+                    <div id="revBookCoverId">
+                        <image></image>Image goes here
+                    </div>
+                    <!-- this will go underneath the image-->
+                    <div id="barcodeNumber">
+                        Barcode Id:
+                    </div>
+                </div>
+                <div id="revBookDeets">
+                    <p>Author</p>
+                    <p>Release Date</p>
+                    <p>Age Rating</p>
+                </div>
+
+            </div>
+            <div id="theWordReview">
+                Words
+            </div>
+
+            <div id="review">
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+</body>
+
+</html>
