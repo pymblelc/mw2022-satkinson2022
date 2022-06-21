@@ -327,61 +327,40 @@
             </div>
         </div>
         <!-- the full review -->
-        <div class="hidden pages" id="otherUserPg">
-            <div style="width:100%">
-                <div class="center">
-                    <div>
-                        <h2>Upload</h2>
-                        <div id="revBookCoverId">
-                            <image></image>Image goes here
-                        </div>
-                        <!-- this will go underneath the image-->
-                        <p id="barcodeNumber">
-                            Barcode Id:
-                        </p>
-                        <div id="reviewInfor">
-                            <div class="uploadTags">Title:
+        <div class="hidden pages" id="bookReviews">
+            <div style="background-color: rgb(183, 235, 183);  border-bottom: solid 2px rgb(118, 209, 171);">
+                <div class="leftCentreMargin" id="postDate">16/02</div>
+                <div id="reviewTitle">
+                    <h2 id="bookRevTitle">Book Name - </h2>
+                    <h4 class="leftCentreMargin" id="reviewerName">name name</h4>
+                </div>
 
-                            </div>
-                            <input class="bookInfo" id="bookName" placeholder="Book Name"><br>
-                            <div class="uploadTags">
-                                <p class="uploadWords">
-                                <p class="redText undoneAst">*</p>Author:
-                                </p>
-                            </div>
-                            <input class="bookInfo" id="bookAuthor" placeholder="Author"><br>
-                            <div class="uploadTags">
-                                <p class="uploadWords">Recommended Age:</p>
-                            </div>
-                            <input class="bookInfo" id="bookAgeReq" type="number" placeholder="Recommended Age"><br>
-                            <div id="releaseAndRating">
-                                <p class="redText undoneAst">*</p>
-                                <div class="nextToEachOther uploadTags">
-                                    <p class="uploadWords" id="relaseTag">Release:
-                                    </p><br>
+                <div id="reviewStars">5 stars</div>
+            </div>
 
-                                    <input type="date" class="bookInfo" id="bookRelease">
-                                </div>
-
-                                <div class="uploadTags">
-                                    <p class="uploadWords">Rating:
-                                    <p class="redText undoneAst">*</p> <br>
-                                    <input type="radio" name="rate" id="rate-1" value="1">
-                                    <input type="radio" name="rate" id="rate-2" value="2">
-                                    <input type="radio" name="rate" id="rate-3" value="3">
-                                    <input type="radio" name="rate" id="rate-4" value="4">
-                                    <input type="radio" name="rate" id="rate-5" value="5"></p>
-                                </div>
-                            </div>
-                            <p class="uploadTags uploadWords" id="opinionPg">
-                                Opinion: <textarea class="bookInfo" id="bookOpinion" cols="40"></textarea>
-                                <br>
-                            </p>
-
-
-                            <button class='userBtnInfo' id="uploadReview">Upload</button>
-                        </div>
+            <div id="realBookInfo">
+                <div id="coverAndCode">
+                    <div id="revBookCoverId">
+                        <image></image>Image goes here
                     </div>
+                    <!-- this will go underneath the image-->
+                    <div id="barcodeNumber">
+                        Barcode Id:
+                    </div>
+                </div>
+                <div id="revBookDeets">
+                    <div class="leftCentreMargin" id="revAuthor">Author</div>
+                    <div class="leftCentreMargin" id="revRelease">Release Date</div>
+                    <div class="leftCentreMargin" id="revAge">Age Rating</div>
+                </div>
+
+            </div>
+            <div id="theWordReview">
+                <div class="leftCentreMargin" id="revTitleTitle">
+                    Review:
+                </div>
+                <div id="reviewParag">
+                    Actual Review
                 </div>
             </div>
         </div>

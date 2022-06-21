@@ -7,6 +7,10 @@ p {
     margin: 0;
 }
 
+button {
+    cursor: pointer;
+}
+
 body,
 .center {
     display: flex;
@@ -20,7 +24,7 @@ body,
     justify-content: center;
 }
 
-.pages { 
+.pages {
     flex-direction: column;
     height: 100%;
     overflow-y: auto;
@@ -389,7 +393,7 @@ body,
     background-color: aqua;
     width: 20px;
     height: 20px;
-} 
+}
 
 #otherUsername {
     margin-top: 5%;
@@ -397,87 +401,131 @@ body,
     font-family: "Trebuchet MS";
 }
 
-.toUsersPg{
+.toUsersPg {
     cursor: pointer;
 }
+
 /*home page ---------------------------------------------------------------------------------------------------------- */
 
 /*review page ---------------------------------------------------------------------------------------------------------- */
-#bookReviews{
+#bookReviews {
     width: 100%;
     display: flex;
-    
+    display: none;
 }
-#reviewTitle{
+
+#reviewTitle {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100px;
-    margin-bottom: -7%;
+    margin-bottom: -8%;
 }
-#reviewStars{
+
+#reviewStars {
+    margin-bottom: 5%;
 }
-#bookRevTitle{
+
+#bookRevTitle {}
+
+#reviewerName {}
+
+#revAge {
+    margin-top: 10%;
 }
-#reviewerName{
-    
-}
-#realBookInfo{
-    margin-top: 5%;
-    width:100%;
+
+.leftCentreMargin {
     display: flex;
-    background-color: blueviolet;
+    justify-content: left;
+}
+
+#revTitleTitle{
+    margin-left: 5%;
+    margin-top: 3%;
+}
+
+#revAuthor {
+    margin-top: 10%;
+}
+
+#revRelease {
+    margin-top: 10%;
+}
+
+#postDate {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+#realBookInfo {
+    margin-top: 5%;
+    width: 100%;
+    display: flex;
     height: 250px;
 }
-#coverAndCode{
+
+#coverAndCode {
     width: 50%;
     display: flex;
-    background-color: aqua;
     height: 250px;
     flex-direction: column;
 }
-#revBookCoverId{
+
+#revBookCoverId {
     width: 140px;
     height: 200px;
     background-color: green;
-    margin-left: 5%;
+    margin-left: 15%;
 }
-#barcodeNumber{
-    width:50%;
+
+#barcodeNumber {
+    width: 50%;
+    margin-top: 5%;
+    margin-left: 10%;
 }
-#revBookDeets{
-    display: flex;
-    flex-direction: column;
+
+#revBookDeets {
+    width: 50%;
     justify-content: left;
 }
-#theWordReview{
+
+#theWordReview {
     width: 100%;
-    background-color: blue;
+    border-top: 5px solid rgb(118, 209, 171);
     height: 100vh;
     display: flex;
+    flex-direction: column;
+}
 
+#reviewParag {
+    margin-top: 5%;
+    display: flex;
+    justify-content: left;
+    margin-left: 10%;
 }
 
 /*other user pages --------------------------------------------------------------------------------------------------- */
-#otherUserPg{
-    background-color: aqua;
+#otherUserPg {
     width: 100%;
 }
 
-#otherFollowBar{
-    height:10%;
+#otherFollowBar {
+    height: 10%;
 }
 
-#otherPersonal{
-    background-color: aliceblue;
+#otherPersonal {
+    margin-bottom: 3%;
 }
-#otherName{
-    background-color: blueviolet;
+
+#otherName {
+    margin-bottom: 3%;
 }
-#otherBio{
-    background-color: aquamarine;
+
+#otherBio {
+    margin-bottom: 3%;
 }
-#follow{
+
+#follow {
     cursor: pointer;
 }
 
@@ -519,7 +567,7 @@ body,
     color: rgb(143, 138, 138);
 }
 
-.pfpLarge{
+.pfpLarge {
     background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png');
     background-color: rgb(58, 57, 57);
     height: 130px;
