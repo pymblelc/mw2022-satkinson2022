@@ -410,8 +410,6 @@ body,
 /*review page ---------------------------------------------------------------------------------------------------------- */
 #bookReviews {
     width: 100%;
-    display: flex;
-    display: none;
 }
 
 #reviewTitle {
@@ -453,7 +451,6 @@ body,
 }
 
 #postDate {
-    margin-top: 2%;
     margin-left: 2%;
 }
 
@@ -492,7 +489,7 @@ body,
 #theWordReview {
     width: 100%;
     border-top: 5px solid rgb(118, 209, 171);
-    height: 100vh;
+    height: 30vh;
     display: flex;
     flex-direction: column;
 }
