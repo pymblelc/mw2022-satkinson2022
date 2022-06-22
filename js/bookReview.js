@@ -148,7 +148,7 @@ function addFollowing(item, url, apikey) {
 
 //---- putting followers -----------------------------------
 function updateFollowing(item, itemID) {
-    item.followers++; 
+    item.followers++;
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -286,12 +286,14 @@ $(document).ready(function () { //makes sure the document is always ready
 
                 //---- sets the personal page with the correct data
                 setPersonalPage();
+                document.getElementById("userBtn").click();
                 break; //---- breaking out of loop
             }
         }
         if (found === false) {
             //---- red text to show that username or password is incorrect
             $('#checkingAccount').show();
+            
         }
     }
 
@@ -322,15 +324,28 @@ $(document).ready(function () { //makes sure the document is always ready
         $('#otherTtlFllwing').html(object.following);
         $('#otherTtlFllwers').html(object.followers);
         var userFollowing = checkIfFollow(currentUser, object.username);
-        if(userFollowing === true){
+        if (userFollowing === true) {
             document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
             document.querySelector("#follow").classList.add("hidden");
-        }else{
+        } else {
             document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
             document.querySelector("#follow").classList.remove("hidden");
         }
     }
-    
+
+    //---- set the review page ------------
+    function setReview(object) {
+        $('#bookRevTitle').html(object.bookName + " - ");
+        $('#revAuthor').html(object.author);
+        $('#reviewStars').html(object.rating);
+        $('#revRelease').html(object.releaseDate);
+        $('#reviewParag').html(object.wordedRating);
+        $('#reviewerName').html(object.reviewer);
+        $('#barcodeNumber').html(object.barcodeNumber);
+        $('#postDate').html(object.dateAdded);
+        $('#revAge').html(object.ageRating);
+    }
+
     //---- check if following -----------
     function checkIfFollow(user, otherUser) { //this will be useful when displaying if another person is following maybe
         //find the other username from the page
@@ -399,7 +414,7 @@ $(document).ready(function () { //makes sure the document is always ready
         let search_details = document.createElement("div"); //creating div for all data
         search_details.classList.add("searchBkInfo");
         search_details.innerHTML = `
-            <p class="">${nameBook}</p>
+            <p class="nameBookSearch">${nameBook}</p>
             <p>${writtenBy}</p>
             <p class="cut-text">${specObj.wordedRating}</p>
             <button class="toUsersPg">${specObj.reviewer}</button>
@@ -409,17 +424,21 @@ $(document).ready(function () { //makes sure the document is always ready
         document.getElementById(motherDiv).appendChild(search_details);
         //switchPages(); //
         switchPages('.toUsersPg', '#otherUserPg');
-        // $('.toUsersPg').click(function () {
+        switchPages('.nameBookSearch', '#bookReviews');
+        search_details.querySelector(".nameBookSearch").addEventListener("click", function () {
+            setReview(specObj);
+        });
         search_details.querySelector(".toUsersPg").addEventListener("click", function () {
             var otherUserInfo = findOtherUser(search_details.querySelector('.toUsersPg').innerHTML);
             setOtherPage(otherUserInfo);
-            $('#follow').click(function () { //START HERE - repeats continuously
-                console.log('button clicked'); //loops continuously
+            $('#follow').click(function () { 
+                console.log('button clicked');
                 follow(otherUserInfo.username);
             });
         });
     }
 
+    //function LOOP THROUGH AND MAKE STARS REPLACE
 
     //---- creates an object for the review a user creates  ------------------
     function createReview() {
@@ -456,11 +475,12 @@ $(document).ready(function () { //makes sure the document is always ready
             "wordedRating": $('#bookOpinion').val(),
             "reviewer": currentUser,
             "barcodeNumber": $('#barcodeId').val(),
+            "ageRating": $('#bookAgeReq').val(),
         }
         console.log(bookData);
 
         //---- displays relevant error text if reqs are met
-        if ($('#bookName').val() == "" || $('#bookAuthor').val() == "" || $('#bookRelease').val() == "") {
+        if ($('#bookName').val() == "" || $('#bookAuthor').val() == "" || $('#bookRelease').val() == "" || $('#barcodeId').val() == "" || $('#bookAgeReq').val() == "") {
             $('.redText').show();
         } else {
             addBook(bookData, bookReviewUrl, '621d80b634fd621565858a79', arrBooks);
@@ -562,7 +582,7 @@ $(document).ready(function () { //makes sure the document is always ready
                     "password": arrUsers[count].password,
                     "firstName": arrUsers[count].firstName,
                     "surname": arrUsers[count].surname,
-                    "followers": arrUsers[count].followers, 
+                    "followers": arrUsers[count].followers,
                     "following": arrUsers[count].following,
                     "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
                 }

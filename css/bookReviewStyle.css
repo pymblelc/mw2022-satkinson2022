@@ -65,7 +65,7 @@ body,
 }
 
 .redText {
-    font-size: 12px;
+    font-size: 20px;
     margin-top: -2%;
     display: none;
     color: red;
@@ -251,7 +251,6 @@ body,
     margin: 10px;
     cursor: pointer;
     background-color: rgb(22, 133, 11);
-    float: left;
     margin-top: 8%;
     margin-left: 5%;
 }
@@ -293,6 +292,14 @@ body,
 /*search page styling ------------------------------------------------------------------------------------------------------ */
 #searchPg {
     width: 100%;
+}
+
+
+.nameBookSearch{
+    text-decoration-line: underline;
+    color: rgb(22, 133, 11);
+    font-weight: bold;
+    cursor: pointer;
 }
 
 #searchResBtn {
