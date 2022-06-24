@@ -6,6 +6,7 @@ var arrUsers = [''];
 var arrBooks = [''];
 var arrFollow = [''];
 var arrSearch = [];
+var arrSameBCode = [];
 var currentUser = '';
 var jsonData = [];
 var usersFollowing = [''];
@@ -382,20 +383,20 @@ $(document).ready(function () { //makes sure the document is always ready
     }
 
     //---- creates the div which all the search information will fall into  ------------------
-    function motherDiv() {
+    function motherDiv(array) {
         $('.searchResults').remove();
         $('.searchBkInfo').remove();
         $('.coverBook').remove();
-        for (var i = 0; i <= arrSearch.length - 1; i++) {
+        for (var i = 0; i <= array.length - 1; i++) {
             let mother = document.createElement('div');
             mother.className = 'searchResults';
             console.log('activated');
 
             //---- unique id so all the information doesn't go into the same place
-            mother.id = arrSearch[i]._id;
+            mother.id = array[i]._id;
             console.log(mother.id);
             document.querySelector('#searchPg').appendChild(mother);
-            displaySearch(arrSearch[i], mother.id);
+            displaySearch(array[i], mother.id);
         }
     }
 
@@ -489,6 +490,16 @@ $(document).ready(function () { //makes sure the document is always ready
         console.log(arrBooks);
     }
 
+    //---- finds book to showcase based on the barcode ----------------------------------
+    function searchBarCode(barcode){
+        for(var i = 0; i < arrBooks.length; i++){
+            if(barcode == arrBooks[i].barcodeNumber){
+                arrSameBCode.push(arrBooks[i]);
+                motherDiv(arrSameBCode);
+            }
+        }
+
+    }
 
     //---- turns search terms into an array of keywordsF --------------------------------
     function createKeywords(string, arr) {
@@ -524,7 +535,7 @@ $(document).ready(function () { //makes sure the document is always ready
                 if (exist != -1) {
                     arrSearch.push(arrBooks[count]);
                     console.log(arrSearch);
-                    motherDiv();
+                    motherDiv(arrSearch);
                 }
             }
             count++;
@@ -611,14 +622,23 @@ $(document).ready(function () { //makes sure the document is always ready
         //remove following
     }
 
+    var hasScanned = false;
     function onScanSuccess(decodedText, decodedResult) {
+        if (hasScanned) return;
+        hasScanned = true;
+
         // handle the scanned code as you like, for example:
         console.log(`Code matched = ${decodedText}`, decodedResult);
+        
+        searchBarCode(decodedText); //does so infinitely
+        
+        document.querySelector('#searchPg').classList.remove("hidden");
+        document.querySelector('#scanPg').classList.add("hidden");
+        //stop(): Promise<void> {};
     }
 
     function onScanFailure(error) {
-        // handle scan failure, usually better to ignore and keep scanning.
-        // for example:
+        hasScanned = false;
         console.warn(`Code scan error = ${error}`);
     }
 
