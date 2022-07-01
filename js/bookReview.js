@@ -2,9 +2,11 @@ var apikey = '621d80b634fd621565858a79';
 var bookReviewUrl = 'https://bookreviewdb-4d45.restdb.io/rest/bookreviews';
 var usersUrl = 'https://bookreviewdb-4d45.restdb.io/rest/bookusers';
 var fllwUrl = 'https://bookreviewdb-4d45.restdb.io/rest/followers';
+var timesReviewUrl = 'https://bookreviewdb-4d45.restdb.io/rest/timesreview';
 var arrUsers = [''];
 var arrBooks = [''];
 var arrFollow = [''];
+var arrTimesRev = [];
 var arrSearch = [];
 var arrSameBCode = [];
 var currentUser = '';
@@ -73,6 +75,27 @@ function getFollowers(url, apikey) {
         arrFollow = response;
     });
 }
+
+//---- get amount of times something has been reviewed --------
+function getTimesRev(url, apikey) {
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": url,
+        "method": "GET",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        }
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        arrTimesRev = response;
+    });
+}
+
 
 //-----------------adding data--------------------------
 //----- adds user data----------------------------------
@@ -147,8 +170,32 @@ function addFollowing(item, url, apikey) {
 
 }
 
+//---- adds a new book for counting times rev'd ------------
+function addTimesRev(item, url, apikey) {
+    getTimesRev(url, apikey);
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": url,
+        "method": "POST",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        },
+        "processData": false,
+        "data": JSON.stringify(item)
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log('This user has been followed'); //adds nothing to the database
+        console.log(response);
+    });
+}
+
+//---- altering data ---------------------------------------
 //---- putting followers -----------------------------------
-function updateFollowing(item, itemID) {
+function updateFollow(item, itemID) {
     item.followers++;
     var settings = {
         "async": true,
@@ -170,11 +217,58 @@ function updateFollowing(item, itemID) {
     });
 }
 
+//---- changes the data for the amount of people following --------------------
+function updateNumFollowing(current, currentID) {
+    current.following++;
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://bookreviewdb-4d45.restdb.io/rest/bookusers/" + currentID,
+        "method": "PUT",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        },
+        "processData": false,
+        "data": JSON.stringify(current)
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        console.log('updated');
+    });
+}
+
+//---- change amount of times rev ---------------------------------------------
+function updateTimesRev(item, itemID) {
+    item.timesRev++;
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://bookreviewdb-4d45.restdb.io/rest/timesreview/" + itemID,
+        "method": "PUT",
+        "headers": {
+            "content-type": "application/json",
+            "x-apikey": apikey,
+            "cache-control": "no-cache"
+        },
+        "processData": false,
+        "data": JSON.stringify(item)
+    }
+
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        console.log('updated timesRev!');
+    });
+}
+
 $(document).ready(function () { //makes sure the document is always ready
     //----- gets data----------------------------
     getBooks(bookReviewUrl, '621d80b634fd621565858a79');
     getUsers(usersUrl, '621d80b634fd621565858a79');
     getFollowers(fllwUrl, '621d80b634fd621565858a79');
+    getTimesRev(timesReviewUrl, '621d80b634fd621565858a79');
     //----- switching between pages based on button clicked ------------
     function switchPages(button, page) {
         $(button).click(function () {
@@ -294,7 +388,7 @@ $(document).ready(function () { //makes sure the document is always ready
         if (found === false) {
             //---- red text to show that username or password is incorrect
             $('#checkingAccount').show();
-            
+
         }
     }
 
@@ -311,6 +405,8 @@ $(document).ready(function () { //makes sure the document is always ready
             if (arrUsers[i].username == currentUser) {
                 $('#setFirstName').html(arrUsers[i].firstName);
                 $('#setSurname').html(arrUsers[i].surname);
+                $('#ttlFllw').html(arrUsers[i].followers);
+                $('#ttlFllwing').html(arrUsers[i].following);
             }
         }
     }
@@ -364,8 +460,11 @@ $(document).ready(function () { //makes sure the document is always ready
         //get the user it is 
         //update the following
         var toBeFllw = findOtherUser(name);
+        var currentP = findOtherUser(currentUser);
+        var currentPId = currentP.id;
         var itemID = toBeFllw.id;
-        updateFollowing(toBeFllw, itemID);
+        updateFollow(toBeFllw, itemID);
+        updateNumFollowing(currentP, currentPId);
         //add that to the database
     }
 
@@ -432,7 +531,7 @@ $(document).ready(function () { //makes sure the document is always ready
         search_details.querySelector(".toUsersPg").addEventListener("click", function () {
             var otherUserInfo = findOtherUser(search_details.querySelector('.toUsersPg').innerHTML);
             setOtherPage(otherUserInfo);
-            $('#follow').click(function () { 
+            $('#follow').click(function () {
                 console.log('button clicked');
                 follow(otherUserInfo.username);
             });
@@ -441,6 +540,51 @@ $(document).ready(function () { //makes sure the document is always ready
 
     //function LOOP THROUGH AND MAKE STARS REPLACE
 
+    //---- updates the number of times something has been reviewed -----------
+    function findRevExist(name) {
+        var exists = false;
+        for (var i = 0; i < arrTimesRev.length; i++) {
+            if (arrTimesRev[i] == name) {
+                exists = true
+            }
+        }
+        return exists;
+    }
+
+    function revObj(name) {
+        var found = true;
+        var obj = [''];
+        while (obj == '') {
+            for (var i; i < arrBooks.length; i++) {
+                if (name == arrBooks[i].title) {
+                    obj = arrBooks[i];
+                }
+            }
+        }
+        return obj
+    }
+
+    function numRevs(name) {
+        var exists = findRevExist(name);
+        var done = false
+        if (exists === true) {
+            while (done === false) {
+                for (var i = 0; i < arrTimesRev.length; i++) {
+                    if (arrTimesRev[i] == name) {
+                        var obj = revObj(name);
+                        updateTimesRev(obj);
+                        done = true;
+                    }
+                }
+            }
+        } else {
+            jsonData = {
+                "title": name,
+                "timesReviewed": 1,
+            }
+            addTimesRev(jsonData)
+        }
+    }
     //---- creates an object for the review a user creates  ------------------
     function createReview() {
         //var image = ""; //TODO: preview unavailable
@@ -485,15 +629,16 @@ $(document).ready(function () { //makes sure the document is always ready
             $('.redText').show();
         } else {
             addBook(bookData, bookReviewUrl, '621d80b634fd621565858a79', arrBooks);
+            numRevs($('#bookName').val().toLowerCase());
             alert('Successfully Added'); //---- lets user know that the addition worked
         }
         console.log(arrBooks);
     }
 
     //---- finds book to showcase based on the barcode ----------------------------------
-    function searchBarCode(barcode){
-        for(var i = 0; i < arrBooks.length; i++){
-            if(barcode == arrBooks[i].barcodeNumber){
+    function searchBarCode(barcode) {
+        for (var i = 0; i < arrBooks.length; i++) {
+            if (barcode == arrBooks[i].barcodeNumber) {
                 arrSameBCode.push(arrBooks[i]);
                 motherDiv(arrSameBCode);
             }
@@ -629,9 +774,9 @@ $(document).ready(function () { //makes sure the document is always ready
 
         // handle the scanned code as you like, for example:
         console.log(`Code matched = ${decodedText}`, decodedResult);
-        
+
         searchBarCode(decodedText); //does so infinitely
-        
+
         document.querySelector('#searchPg').classList.remove("hidden");
         document.querySelector('#scanPg').classList.add("hidden");
         //stop(): Promise<void> {};
