@@ -81,11 +81,11 @@ function getTimesRev(url, apikey) {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": url,
+        "url": 'https://bookreviewdb-4d45.restdb.io/rest/timesreview',
         "method": "GET",
         "headers": {
             "content-type": "application/json",
-            "x-apikey": apikey,
+            "x-apikey": '621d80b634fd621565858a79',
             "cache-control": "no-cache"
         }
     }
@@ -582,7 +582,7 @@ $(document).ready(function () { //makes sure the document is always ready
                 "title": name,
                 "timesReviewed": 1,
             }
-            addTimesRev(jsonData)
+            addTimesRev(jsonData, timesReviewUrl, '621d80b634fd621565858a79');
         }
     }
     //---- creates an object for the review a user creates  ------------------
