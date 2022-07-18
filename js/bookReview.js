@@ -14,6 +14,7 @@ var jsonData = [];
 var usersFollowing = [''];
 var usersFollowers = [''];
 var otherUserInfo = [];
+var topReviews = [];
 
 //-----------------getting data--------------------------
 //----- gets book review data ---------------------------
@@ -280,6 +281,34 @@ $(document).ready(function () { //makes sure the document is always ready
         });
     }
 
+    //--- sorting data for home page --------
+    function sortReviews(array){ //this sort works
+        let index = 0;
+        let length = array.length;
+        let nextElementIndex = 0;
+      
+        while (index < length - 1) {
+          nextElementIndex = index + 1;
+      
+          let maxIndex = index; // This will hold the index of the possible last candidate for swapping.
+      
+          while (nextElementIndex < length) {
+            if (array[maxIndex].timesReviewed < array[nextElementIndex].timesReviewed) {
+              // Instead of swapping here, only the index of the candidate is saved.
+              maxIndex = nextElementIndex;
+            }
+            nextElementIndex++;
+          }
+      
+          // And finally: if any element to the right of index is greater than the element at index then swap.
+          if (maxIndex != index) {
+            [array[index], array[maxIndex]] = [array[maxIndex ], array[index]];
+          }
+      
+          index++;
+        }
+        console.log(array);
+    }
 
     //----- saving new user data ---> used when they sign up to create an account ------------
     function saveData() {
@@ -358,6 +387,7 @@ $(document).ready(function () { //makes sure the document is always ready
 
     //---- finding the user data to log in the user
     function login() {
+        sortReviews(arrTimesRev);
         //---- getting values from inputs
         var username = $('#enterUsername').val();
         var password = $('#enterPassword').val();
