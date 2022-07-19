@@ -15,6 +15,7 @@ var usersFollowing = [''];
 var usersFollowers = [''];
 var otherUserInfo = [];
 var topReviews = [];
+var usersReviews = [];
 
 //-----------------getting data--------------------------
 //----- gets book review data ---------------------------
@@ -313,7 +314,7 @@ $(document).ready(function () { //makes sure the document is always ready
                 if (sortedArr[i].title.toLowerCase() == arrBooks[count].bookName.toLowerCase()) {
                     sortObj.push(arrBooks[count]);
                     added = true;
-                    homeMotherDiv(sortObj);
+                    motherDiv(sortObj, '#comingSoon');
                 }
                 count++;
             }
@@ -446,8 +447,19 @@ $(document).ready(function () { //makes sure the document is always ready
                 $('#setSurname').html(arrUsers[i].surname);
                 $('#ttlFllw').html(arrUsers[i].followers);
                 $('#ttlFllwing').html(arrUsers[i].following);
+                setPersonalReviews(currentUser, '#personalPgRevs');
             }
         }
+    }
+
+    function setPersonalReviews(username, page){
+        var usersReviews = [];
+        for(var i = 0; i < arrBooks.length; i++){
+            if(username == arrBooks[i].reviewer){
+                usersReviews.push(arrBooks[i]);
+            }
+        }
+        motherDiv(usersReviews, page)
     }
 
     //---- displays the other users pages ---------------------------
@@ -459,6 +471,7 @@ $(document).ready(function () { //makes sure the document is always ready
         $('#otherSN').html(object.surname);
         $('#otherTtlFllwing').html(object.following);
         $('#otherTtlFllwers').html(object.followers);
+        setPersonalReviews(object.username, '#otherPersonsRevs')
         var userFollowing = checkIfFollow(currentUser, object.username);
         if (userFollowing === true) {
             document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
@@ -520,25 +533,9 @@ $(document).ready(function () { //makes sure the document is always ready
         console.log(div);
     }
 
-    function homeMotherDiv(array){
-        $('.searchResults').remove();
-        $('.searchBkInfo').remove();
-        $('.coverBook').remove();
-        for (var i = 0; i <= array.length - 1; i++) {
-            let mother = document.createElement('div');
-            mother.className = 'searchResults';
-            console.log('activated');
-
-            //---- unique id so all the information doesn't go into the same place
-            mother.id = array[i]._id;
-            console.log(mother.id);
-            document.querySelector('#comingSoon').appendChild(mother);
-            displaySearch(array[i], mother.id);
-        }
-    }
     
     //---- creates the div which all the search information will fall into  ------------------
-    function motherDiv(array) {
+    function motherDiv(array, page) {
         $('.searchResults').remove();
         $('.searchBkInfo').remove();
         $('.coverBook').remove();
@@ -550,7 +547,7 @@ $(document).ready(function () { //makes sure the document is always ready
             //---- unique id so all the information doesn't go into the same place
             mother.id = array[i]._id;
             console.log(mother.id);
-            document.querySelector('#searchPg').appendChild(mother);
+            document.querySelector(page).appendChild(mother);
             displaySearch(array[i], mother.id);
         }
     }
@@ -696,7 +693,7 @@ $(document).ready(function () { //makes sure the document is always ready
         for (var i = 0; i < arrBooks.length; i++) {
             if (barcode == arrBooks[i].barcodeNumber) {
                 arrSameBCode.push(arrBooks[i]);
-                motherDiv(arrSameBCode);
+                motherDiv(arrSameBCode, '#searchPg');
             }
         }
 
@@ -736,7 +733,7 @@ $(document).ready(function () { //makes sure the document is always ready
                 if (exist != -1) {
                     arrSearch.push(arrBooks[count]);
                     console.log(arrSearch);
-                    motherDiv(arrSearch);
+                    motherDiv(arrSearch, '#searchPg');
                 }
             }
             count++;
@@ -905,8 +902,7 @@ $(document).ready(function () { //makes sure the document is always ready
     $("#logOut").click(function () {
         currentUser = "";
         alert('loggedOut');
-        jsonData = [];
-        document.querySelector("#logOutPopUp").classList.add("hidden");
+        location.reload();
     });
 
     $("#homeBtn").click(function () {
@@ -919,7 +915,6 @@ $(document).ready(function () { //makes sure the document is always ready
     switchPages('#userBtn', '#personalPg');
     switchPages('#homeBtn', '#comingSoon');
     switchPages('#barcodeBtn', '#scanPg');
-    switchPages('#logOut', '#loginPg');
 
     $('#signUpBtn').click(function () {
         document.querySelectorAll(".pages").forEach((element) => {
