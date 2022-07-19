@@ -670,6 +670,11 @@ body,
     height: 97vh;
 }
 
+#homeTxt{
+    margin-top: -6%;
+    margin-bottom: 5%;
+}
+
 #holdsCam {
     margin: 0px auto;
     width: 50%;

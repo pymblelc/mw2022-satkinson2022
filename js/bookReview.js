@@ -282,32 +282,42 @@ $(document).ready(function () { //makes sure the document is always ready
     }
 
     //--- sorting data for home page --------
-    function sortReviews(array){ //this sort works
+    function sortReviews(array) { //this sort works
         let index = 0;
-        let length = array.length;
         let nextElementIndex = 0;
-      
-        while (index < length - 1) {
-          nextElementIndex = index + 1;
-      
-          let maxIndex = index; // This will hold the index of the possible last candidate for swapping.
-      
-          while (nextElementIndex < length) {
-            if (array[maxIndex].timesReviewed < array[nextElementIndex].timesReviewed) {
-              // Instead of swapping here, only the index of the candidate is saved.
-              maxIndex = nextElementIndex;
+        while (index < array.length - 1) {
+            nextElementIndex = index + 1;
+            let maximum = index;
+            while (nextElementIndex < array.length) {
+                if (array[maximum].timesReviewed < array[nextElementIndex].timesReviewed) {
+                    maximum = nextElementIndex;
+                }
+                nextElementIndex++;
             }
-            nextElementIndex++;
-          }
-      
-          // And finally: if any element to the right of index is greater than the element at index then swap.
-          if (maxIndex != index) {
-            [array[index], array[maxIndex]] = [array[maxIndex ], array[index]];
-          }
-      
-          index++;
+            if (maximum != index) {
+                [array[index], array[maximum]] = [array[maximum], array[index]];
+            }
+
+            index++;
         }
-        console.log(array);
+        return array;
+    }
+
+    function displayHomePage() {
+        var sortedArr = sortReviews(arrTimesRev);
+        var sortObj = [];
+        for (var i = 0; i < 3; i++) {
+            var count = 0;
+            var added = false
+            while (count < arrBooks.length && added === false) {
+                if (sortedArr[i].title.toLowerCase() == arrBooks[count].bookName.toLowerCase()) {
+                    sortObj.push(arrBooks[count]);
+                    added = true;
+                    homeMotherDiv(sortObj);
+                }
+                count++;
+            }
+        }
     }
 
     //----- saving new user data ---> used when they sign up to create an account ------------
@@ -387,7 +397,6 @@ $(document).ready(function () { //makes sure the document is always ready
 
     //---- finding the user data to log in the user
     function login() {
-        sortReviews(arrTimesRev);
         //---- getting values from inputs
         var username = $('#enterUsername').val();
         var password = $('#enterPassword').val();
@@ -511,6 +520,23 @@ $(document).ready(function () { //makes sure the document is always ready
         console.log(div);
     }
 
+    function homeMotherDiv(array){
+        $('.searchResults').remove();
+        $('.searchBkInfo').remove();
+        $('.coverBook').remove();
+        for (var i = 0; i <= array.length - 1; i++) {
+            let mother = document.createElement('div');
+            mother.className = 'searchResults';
+            console.log('activated');
+
+            //---- unique id so all the information doesn't go into the same place
+            mother.id = array[i]._id;
+            console.log(mother.id);
+            document.querySelector('#comingSoon').appendChild(mother);
+            displaySearch(array[i], mother.id);
+        }
+    }
+    
     //---- creates the div which all the search information will fall into  ------------------
     function motherDiv(array) {
         $('.searchResults').remove();
@@ -883,7 +909,9 @@ $(document).ready(function () { //makes sure the document is always ready
         document.querySelector("#logOutPopUp").classList.add("hidden");
     });
 
-
+    $("#homeBtn").click(function () {
+        displayHomePage();
+    });
     //---- switching though pages
     //switchPages('#loginBtn', '#loginPg');
     switchPages('#searchBtn', '#searchPg');
