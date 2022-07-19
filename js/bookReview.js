@@ -291,7 +291,6 @@ function deleteWhoFllw(itemID){
       }
       
       $.ajax(settings).done(function (response) {
-        
         console.log(response);
       });
 }
@@ -597,21 +596,42 @@ $(document).ready(function () { //makes sure the document is always ready
         //TO DO: make the search term found bold
         let search_details = document.createElement("div"); //creating div for all data
         search_details.classList.add("searchBkInfo");
+        // if(currentUser == specObj.reviewer){
+        //     search_details.innerHTML = `
+        //     <p class="nameBookSearch">${nameBook}</p>
+        //     <p>${writtenBy}</p>
+        //     <p class="cut-text">${specObj.wordedRating}</p>`
+        // }else{
+        //     search_details.innerHTML = `
+        //     <p class="nameBookSearch">${nameBook}</p>
+        //     <p>${writtenBy}</p>
+        //     <p class="cut-text">${specObj.wordedRating}</p>
+        //     <button class="toUsersPg">${specObj.reviewer}</button>`
+        //     search_details.querySelector(".toUsersPg").addEventListener("click", function () {
+        //         var otherUserInfo = findOtherUser(search_details.querySelector('.toUsersPg').innerHTML);
+        //         setOtherPage(otherUserInfo);
+        //         $('#follow').click(function () {
+        //             console.log('button clicked');
+        //             follow(otherUserInfo.username);
+        //         });
+        //         $('#unfollow').click(function () {
+        //             console.log('button clicked');
+        //             unfollow(otherUserInfo.username);
+        //         });
+        //     });
+        // }
+        ;
         search_details.innerHTML = `
             <p class="nameBookSearch">${nameBook}</p>
             <p>${writtenBy}</p>
             <p class="cut-text">${specObj.wordedRating}</p>
-            <button class="toUsersPg">${specObj.reviewer}</button>
-        `;
-
+            <button class="toUsersPg">${specObj.reviewer}</button>`
+            
         //---- appends it to the different mother divs
         document.getElementById(motherDiv).appendChild(search_details);
         //switchPages(); //
         switchPages('.toUsersPg', '#otherUserPg');
         switchPages('.nameBookSearch', '#bookReviews');
-        search_details.querySelector(".nameBookSearch").addEventListener("click", function () {
-            setReview(specObj);
-        });
         search_details.querySelector(".toUsersPg").addEventListener("click", function () {
             var otherUserInfo = findOtherUser(search_details.querySelector('.toUsersPg').innerHTML);
             setOtherPage(otherUserInfo);
@@ -624,6 +644,10 @@ $(document).ready(function () { //makes sure the document is always ready
                 unfollow(otherUserInfo.username);
             });
         });
+        search_details.querySelector(".nameBookSearch").addEventListener("click", function () {
+            setReview(specObj);
+        });
+       
     }
 
     //function LOOP THROUGH AND MAKE STARS REPLACE
@@ -713,7 +737,7 @@ $(document).ready(function () { //makes sure the document is always ready
         console.log(bookData);
 
         //---- displays relevant error text if reqs are met
-        if ($('#bookName').val() == "" || $('#bookAuthor').val() == "" || $('#bookRelease').val() == "" || $('#barcodeId').val() == "" || $('#bookAgeReq').val() == "") {
+        if ($('#bookName').val() == "" || $('#bookAuthor').val() == "" || $('#bookRelease').val() == "" || $('#barcodeId').val() == "" || $('#bookAgeReq').val() == "" || $('#barcodeId').val().length < 13) {
             $('.redText').show();
         } else {
             addBook(bookData, bookReviewUrl, '621d80b634fd621565858a79', arrBooks);
@@ -835,6 +859,22 @@ $(document).ready(function () { //makes sure the document is always ready
         }
         return otherUserInfo;
     }
+    function findFollowed(lookingFor){
+        var notFound = true;
+        var count = 0;
+        while (count < arrFollow.length && notFound === true) {
+            if (arrFollow[count].followed == lookingFor && arrFollow[count].follower == currentUser) { 
+                notFound = false;
+                otherUserInfo = {
+                    "id": arrFollow[count]._id,
+                    "followed": arrFollow[count].followed,
+                    "follower": arrFollow[count].follower,
+                }
+            }
+            count++
+        }
+        return otherUserInfo;
+    }
 
     function follow(beingFllw) {
         var followed = findOtherUser(beingFllw);
@@ -855,7 +895,8 @@ $(document).ready(function () { //makes sure the document is always ready
         //remove following
         var unfollowed = findOtherUser(currentFllw);
         var currentP = findOtherUser(currentUser);
-        deleteWhoFllw(unfollowed.id);
+        var toBeUnfollow = findFollowed(currentFllw)
+        deleteWhoFllw(toBeUnfollow.id);
         updateFollow(unfollowed, unfollowed.id, false);
         updateNumFollowing(currentP, currentP.id, false);
         document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
@@ -914,6 +955,12 @@ $(document).ready(function () { //makes sure the document is always ready
     //---- upload button; saves book review data ----------------
     $('#uploadReview').click(function () {
         createReview();
+        document.getElementById('barcodeId').value = '';
+        document.getElementById('bookName').value = '';
+        document.getElementById('barcodeId').value = '';
+        document.getElementById('barcodeId').value = '';
+        document.getElementById('barcodeId').value = '';
+        document.getElementById('barcodeId').value = '';
     })
 
     //---- search button clicked
