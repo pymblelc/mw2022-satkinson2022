@@ -197,8 +197,13 @@ function addTimesRev(item, url, apikey) {
 
 //---- altering data ---------------------------------------
 //---- putting followers -----------------------------------
-function updateFollow(item, itemID) {
-    item.followers++;
+function updateFollow(item, itemID, toFllw) {
+    var follow = toFllw;
+    if(follow === true){
+        item.followers++;
+    } else {
+        item.followers--;
+    }
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -220,8 +225,14 @@ function updateFollow(item, itemID) {
 }
 
 //---- changes the data for the amount of people following --------------------
-function updateNumFollowing(current, currentID) {
-    current.following++;
+function updateNumFollowing(current, currentID, toFllw) {
+    var follow = toFllw;
+    if(follow === true){
+        current.following++;
+    }else{
+        current.following--;
+    }
+    
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -263,6 +274,26 @@ function updateTimesRev(item, itemID) {
         console.log(response);
         console.log('updated timesRev!');
     });
+}
+
+//---- delete who is following who ----------------------------------------------
+function deleteWhoFllw(itemID){
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://bookreviewdb-4d45.restdb.io/rest/followers/" + itemID,
+        "method": "DELETE",
+        "headers": {
+          "content-type": "application/json",
+          "x-apikey": '621d80b634fd621565858a79',
+          "cache-control": "no-cache"
+        }
+      }
+      
+      $.ajax(settings).done(function (response) {
+        
+        console.log(response);
+      });
 }
 
 $(document).ready(function () { //makes sure the document is always ready
@@ -515,8 +546,8 @@ $(document).ready(function () { //makes sure the document is always ready
         var currentP = findOtherUser(currentUser);
         var currentPId = currentP.id;
         var itemID = toBeFllw.id;
-        updateFollow(toBeFllw, itemID);
-        updateNumFollowing(currentP, currentPId);
+        updateFollow(toBeFllw, itemID, true);
+        updateNumFollowing(currentP, currentPId, true);
         //add that to the database
     }
 
@@ -587,6 +618,10 @@ $(document).ready(function () { //makes sure the document is always ready
             $('#follow').click(function () {
                 console.log('button clicked');
                 follow(otherUserInfo.username);
+            });
+            $('#unfollow').click(function () {
+                console.log('button clicked');
+                unfollow(otherUserInfo.username);
             });
         });
     }
@@ -815,9 +850,16 @@ $(document).ready(function () { //makes sure the document is always ready
 
     }
 
-    function unfollow() {
+    function unfollow(currentFllw) {
         //TODO: show other button
         //remove following
+        var unfollowed = findOtherUser(currentFllw);
+        var currentP = findOtherUser(currentUser);
+        deleteWhoFllw(unfollowed.id);
+        updateFollow(unfollowed, unfollowed.id, false);
+        updateNumFollowing(currentP, currentP.id, false);
+        document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
+        document.querySelector("#follow").classList.remove("hidden");
     }
 
     var hasScanned = false;
@@ -897,6 +939,9 @@ $(document).ready(function () { //makes sure the document is always ready
         }
 
     });
+    $("#userBtn").click(function (){
+        setPersonalReviews(currentUser, '#personalPgRevs')
+    })
 
     //---- log out button
     $("#logOut").click(function () {
@@ -909,7 +954,7 @@ $(document).ready(function () { //makes sure the document is always ready
         displayHomePage();
     });
     //---- switching though pages
-    //switchPages('#loginBtn', '#loginPg');
+
     switchPages('#searchBtn', '#searchPg');
     switchPages('#uploadBtn', '#uploadPg');
     switchPages('#userBtn', '#personalPg');
