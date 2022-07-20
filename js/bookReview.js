@@ -51,10 +51,11 @@ function getUsers(url, apikey) {
             "cache-control": "no-cache"
         }
     }
-
     $.ajax(settings).done(function (response) {
         console.log(response);
         arrUsers = response;
+        document.querySelector("#loginPg").classList.remove("hidden");
+        document.querySelector("#loader").classList.add("hidden");
     });
 }
 
@@ -199,7 +200,7 @@ function addTimesRev(item, url, apikey) {
 //---- putting followers -----------------------------------
 function updateFollow(item, itemID, toFllw) {
     var follow = toFllw;
-    if(follow === true){
+    if (follow === true) {
         item.followers++;
     } else {
         item.followers--;
@@ -227,12 +228,12 @@ function updateFollow(item, itemID, toFllw) {
 //---- changes the data for the amount of people following --------------------
 function updateNumFollowing(current, currentID, toFllw) {
     var follow = toFllw;
-    if(follow === true){
+    if (follow === true) {
         current.following++;
-    }else{
+    } else {
         current.following--;
     }
-    
+
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -255,7 +256,7 @@ function updateNumFollowing(current, currentID, toFllw) {
 
 //---- change amount of times rev ---------------------------------------------
 function updateTimesRev(item, itemID) {
-    item.timesRev++;
+    item.timesReviewed++;
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -277,28 +278,31 @@ function updateTimesRev(item, itemID) {
 }
 
 //---- delete who is following who ----------------------------------------------
-function deleteWhoFllw(itemID){
+function deleteWhoFllw(itemID) {
     var settings = {
         "async": true,
         "crossDomain": true,
         "url": "https://bookreviewdb-4d45.restdb.io/rest/followers/" + itemID,
         "method": "DELETE",
         "headers": {
-          "content-type": "application/json",
-          "x-apikey": '621d80b634fd621565858a79',
-          "cache-control": "no-cache"
+            "content-type": "application/json",
+            "x-apikey": '621d80b634fd621565858a79',
+            "cache-control": "no-cache"
         }
-      }
-      
-      $.ajax(settings).done(function (response) {
+    }
+
+    $.ajax(settings).done(function (response) {
         console.log(response);
-      });
+    });
 }
+
+
+
 
 $(document).ready(function () { //makes sure the document is always ready
     //----- gets data----------------------------
-    getBooks(bookReviewUrl, '621d80b634fd621565858a79');
     getUsers(usersUrl, '621d80b634fd621565858a79');
+    getBooks(bookReviewUrl, '621d80b634fd621565858a79');
     getFollowers(fllwUrl, '621d80b634fd621565858a79');
     getTimesRev(timesReviewUrl, '621d80b634fd621565858a79');
     //----- switching between pages based on button clicked ------------
@@ -378,11 +382,11 @@ $(document).ready(function () { //makes sure the document is always ready
             console.log(arrUsers[i].username);
 
             //---- checking if the username already exists or if they left it blank  
-            if (arrUsers[i].username == username && username != "") {
+            if (arrUsers[i].username == username || username == "") {
                 //red text stating the username already exists
                 $('#checkingUsername').show();
                 found = true;
-            } else if (password != rePassword && password != "") { //---- checking password is the same or left blank  
+            } else if (password != rePassword || password == "") { //---- checking password is the same or left blank  
                 //red text saying the passwords aren't the same show
                 $('#checkingPassword').show();
                 samePasswords = true;
@@ -416,7 +420,7 @@ $(document).ready(function () { //makes sure the document is always ready
         addUser(obj, usersUrl, '621d80b634fd621565858a79', arrUsers);
 
         //--- setting personal details on the screen
-        setPersonalPage();
+        setPersonalPage(obj);
 
 
         document.querySelector("#personalPg").classList.remove("hidden"); //---showing personal page
@@ -450,7 +454,7 @@ $(document).ready(function () { //makes sure the document is always ready
                 currentUser = username;
 
                 //---- sets the personal page with the correct data
-                setPersonalPage();
+                setPersonalPage(arrUsers[i]);
                 document.getElementById("userBtn").click();
                 break; //---- breaking out of loop
             }
@@ -463,29 +467,27 @@ $(document).ready(function () { //makes sure the document is always ready
     }
 
     //---- used to set the personal page details --------------
-    function setPersonalPage() { //TODO: fix this, not working with sign up
+    function setPersonalPage(obj) { //TODO: fix this, not working with sign up
         //---- displays users username
-        $('#setUserName').html(currentUser);
+        $('#setUserName').html(currentUser)
 
         //---- loops over arrUsers to display correct details
-        for (var i = 0; i < arrUsers.length; i++) {
-            //console.log(arrUsers[i].username);
+        //console.log(arrUsers[i].username);
 
-            //---- if details are correct then displays first and second name
-            if (arrUsers[i].username == currentUser) {
-                $('#setFirstName').html(arrUsers[i].firstName);
-                $('#setSurname').html(arrUsers[i].surname);
-                $('#ttlFllw').html(arrUsers[i].followers);
-                $('#ttlFllwing').html(arrUsers[i].following);
-                setPersonalReviews(currentUser, '#personalPgRevs');
-            }
-        }
+        //---- if details are correct then displays first and second name
+        $('#setFirstName').html(obj.firstName);
+        $('#setSurname').html(obj.surname);
+        $('#ttlFllw').html(obj.followers);
+        $('#ttlFllwing').html(obj.following);
+        setPersonalReviews(currentUser, '#personalPgRevs');
+
+
     }
 
-    function setPersonalReviews(username, page){
+    function setPersonalReviews(username, page) {
         var usersReviews = [];
-        for(var i = 0; i < arrBooks.length; i++){
-            if(username == arrBooks[i].reviewer){
+        for (var i = 0; i < arrBooks.length; i++) {
+            if (username == arrBooks[i].reviewer) {
                 usersReviews.push(arrBooks[i]);
             }
         }
@@ -516,7 +518,7 @@ $(document).ready(function () { //makes sure the document is always ready
     function setReview(object) {
         $('#bookRevTitle').html(object.bookName + " - ");
         $('#revAuthor').html(object.author);
-        $('#reviewStars').html(object.rating);
+        setStars(object.rating);
         $('#revRelease').html(object.releaseDate);
         $('#reviewParag').html(object.wordedRating);
         $('#reviewerName').html(object.reviewer);
@@ -563,7 +565,7 @@ $(document).ready(function () { //makes sure the document is always ready
         console.log(div);
     }
 
-    
+
     //---- creates the div which all the search information will fall into  ------------------
     function motherDiv(array, page) {
         $('.searchResults').remove();
@@ -596,40 +598,21 @@ $(document).ready(function () { //makes sure the document is always ready
         //TO DO: make the search term found bold
         let search_details = document.createElement("div"); //creating div for all data
         search_details.classList.add("searchBkInfo");
-        // if(currentUser == specObj.reviewer){
-        //     search_details.innerHTML = `
-        //     <p class="nameBookSearch">${nameBook}</p>
-        //     <p>${writtenBy}</p>
-        //     <p class="cut-text">${specObj.wordedRating}</p>`
-        // }else{
-        //     search_details.innerHTML = `
-        //     <p class="nameBookSearch">${nameBook}</p>
-        //     <p>${writtenBy}</p>
-        //     <p class="cut-text">${specObj.wordedRating}</p>
-        //     <button class="toUsersPg">${specObj.reviewer}</button>`
-        //     search_details.querySelector(".toUsersPg").addEventListener("click", function () {
-        //         var otherUserInfo = findOtherUser(search_details.querySelector('.toUsersPg').innerHTML);
-        //         setOtherPage(otherUserInfo);
-        //         $('#follow').click(function () {
-        //             console.log('button clicked');
-        //             follow(otherUserInfo.username);
-        //         });
-        //         $('#unfollow').click(function () {
-        //             console.log('button clicked');
-        //             unfollow(otherUserInfo.username);
-        //         });
-        //     });
-        // }
-        ;
         search_details.innerHTML = `
             <p class="nameBookSearch">${nameBook}</p>
             <p>${writtenBy}</p>
             <p class="cut-text">${specObj.wordedRating}</p>
             <button class="toUsersPg">${specObj.reviewer}</button>`
-            
+        if (currentUser == specObj.reviewer) {
+            search_details.querySelector(".toUsersPg").classList.add("hidden");
+        } else {
+            search_details.querySelector(".toUsersPg").classList.remove("hidden");
+        };
+
         //---- appends it to the different mother divs
         document.getElementById(motherDiv).appendChild(search_details);
-        //switchPages(); //
+
+        //switchPages();
         switchPages('.toUsersPg', '#otherUserPg');
         switchPages('.nameBookSearch', '#bookReviews');
         search_details.querySelector(".toUsersPg").addEventListener("click", function () {
@@ -647,46 +630,56 @@ $(document).ready(function () { //makes sure the document is always ready
         search_details.querySelector(".nameBookSearch").addEventListener("click", function () {
             setReview(specObj);
         });
-       
+
     }
 
-    //function LOOP THROUGH AND MAKE STARS REPLACE
+    //---- loops through and showcases the amount of stars ---------------------
+    function setStars(stars) {
+        document.getElementById('reviewStars').innerHTML = "";
+
+        for (var i = 0; i < stars; i++) {
+            let p = document.createElement("span");
+            p.innerHTML = "★";
+            document.getElementById('reviewStars').appendChild(p);
+        }
+    }
 
     //---- updates the number of times something has been reviewed -----------
     function findRevExist(name) {
         var exists = false;
         for (var i = 0; i < arrTimesRev.length; i++) {
-            if (arrTimesRev[i] == name) {
-                exists = true
+            if (arrTimesRev[i].title.toLowerCase() == name) {
+                exists = true;
             }
         }
         return exists;
     }
 
     function revObj(name) {
-        var found = true;
+        var found = false;
         var obj = [''];
-        while (obj == '') {
-            for (var i; i < arrBooks.length; i++) {
-                if (name == arrBooks[i].title) {
-                    obj = arrBooks[i];
+        while (found === false) {
+            for (var i = 0; i < arrTimesRev.length; i++) {
+                if (name == arrTimesRev[i].title) {
+                    obj = arrTimesRev[i];
+                    found = true;
+                    break;
                 }
             }
         }
-        return obj
+        return obj;
     }
 
     function numRevs(name) {
         var exists = findRevExist(name);
         var done = false
-        if (exists === true) {
-            while (done === false) {
-                for (var i = 0; i < arrTimesRev.length; i++) {
-                    if (arrTimesRev[i] == name) {
-                        var obj = revObj(name);
-                        updateTimesRev(obj);
-                        done = true;
-                    }
+        if (exists === true && done === false) {
+            for (var j = 0; j < arrTimesRev.length; j++) {
+                if (arrTimesRev[j].title.toLowerCase() == name) { //finding wrong item
+                    var obj = revObj(name);
+                    updateTimesRev(obj, obj._id);
+                    done = true;
+                    break;
                 }
             }
         } else {
@@ -695,6 +688,7 @@ $(document).ready(function () { //makes sure the document is always ready
                 "timesReviewed": 1,
             }
             addTimesRev(jsonData, timesReviewUrl, '621d80b634fd621565858a79');
+            done = true;
         }
     }
     //---- creates an object for the review a user creates  ------------------
@@ -831,9 +825,6 @@ $(document).ready(function () { //makes sure the document is always ready
                 console.log(usersFollowing);
             }
         }
-
-        // for (const user of arrUsers) {
-        // }
     }
 
     //---- accessing someone's page -------------------------------
@@ -859,11 +850,11 @@ $(document).ready(function () { //makes sure the document is always ready
         }
         return otherUserInfo;
     }
-    function findFollowed(lookingFor){
+    function findFollowed(lookingFor) {
         var notFound = true;
         var count = 0;
         while (count < arrFollow.length && notFound === true) {
-            if (arrFollow[count].followed == lookingFor && arrFollow[count].follower == currentUser) { 
+            if (arrFollow[count].followed == lookingFor && arrFollow[count].follower == currentUser) {
                 notFound = false;
                 otherUserInfo = {
                     "id": arrFollow[count]._id,
@@ -957,10 +948,10 @@ $(document).ready(function () { //makes sure the document is always ready
         createReview();
         document.getElementById('barcodeId').value = '';
         document.getElementById('bookName').value = '';
-        document.getElementById('barcodeId').value = '';
-        document.getElementById('barcodeId').value = '';
-        document.getElementById('barcodeId').value = '';
-        document.getElementById('barcodeId').value = '';
+        document.getElementById('bookAuthor').value = '';
+        document.getElementById('bookRelease').value = '';
+        document.getElementById('bookAgeReq').value = '';
+        document.getElementById('bookOpinion').value = ''; //Doesn't work
     })
 
     //---- search button clicked
@@ -986,7 +977,7 @@ $(document).ready(function () { //makes sure the document is always ready
         }
 
     });
-    $("#userBtn").click(function (){
+    $("#userBtn").click(function () {
         setPersonalReviews(currentUser, '#personalPgRevs')
     })
 
@@ -999,6 +990,10 @@ $(document).ready(function () { //makes sure the document is always ready
 
     $("#homeBtn").click(function () {
         displayHomePage();
+    });
+
+    $("#imageUpload").click(function () {
+        alert('Unable to upload');
     });
     //---- switching though pages
 
@@ -1026,6 +1021,5 @@ $(document).ready(function () { //makes sure the document is always ready
         document.querySelector("#secondQs").classList.add("hidden");
         document.querySelector("#firstQs").classList.remove("hidden");
     });
-
-
 })
+

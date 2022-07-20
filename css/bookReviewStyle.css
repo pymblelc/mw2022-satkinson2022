@@ -1,3 +1,74 @@
+#loader {
+    border: 16px solid #ebe3e3;
+    /* Light grey */
+    border-top: 16px solid rgb(47, 196, 60);
+    /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.message {
+    color: #FFF;
+    position: relative;
+    top: -250px;
+    width: 100%;
+    height: 15vh;
+    padding: 20px;
+    transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    box-sizing: border-box;
+}
+
+#toggle {
+    position: absolute;
+    appearance: none;
+    cursor: pointer;
+    left: -100%;
+    top: -100%;
+}
+
+#toggle+label {
+    top: 13vh;
+    right: 10vh;
+    position: absolute;
+    cursor: pointer;
+    padding: 10px;
+    background: rgb(47, 196, 60);
+    width: 50px;
+    border-radius: 3px;
+    color: #FFF;
+    font-size: 12px;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+    transition: all 500ms ease;
+}
+
+#toggle+label:after {
+    content: "⚙"
+}
+
+#toggle:checked~.message {
+    top: 0;
+}
+
+#toggle:checked+label {
+    background: rgb(19, 66, 33);
+}
+
+
+
 /*general styling ------------------------------------------------------------------------------------------------------ */
 body {
     font-family: 'Trebuchet MS'
@@ -7,8 +78,10 @@ p {
     margin: 0;
 }
 
-button {
+button:hover {
+    background-color: rgb(19, 66, 33);
     cursor: pointer;
+    transform: scale(1.05);
 }
 
 body,
@@ -82,6 +155,10 @@ body,
     color: rgb(47, 196, 60);
 }
 
+.buttons:hover {
+    background-color: rgb(240, 244, 247);
+    transform: scale(1.15);
+}
 
 
 /*login and sign up styling ------------------------------------------------------------------------------------------------------ */
@@ -206,10 +283,9 @@ body,
 
 /*upload review styling ------------------------------------------------------------------------------------------------------ */
 #uploadReview {
-    z-index: 2;
     position: absolute;
     margin-top: 70%;
-    margin-left: -65%;
+    margin-left: -58%;
 }
 
 .uploadWords {
@@ -219,11 +295,21 @@ body,
 .uploadTags {
     float: left;
     margin-top: 3%;
-    margin-left: 3%;
+    margin-left: 10%;
+    margin-right: -8%;
+}
+
+#uploadRate {
+    margin-left: auto;
 }
 
 .undoneAst {
     position: absolute;
+    cursor: pointer;
+}
+
+#titleUpload {
+    display: flex;
 }
 
 .nextToEachOther {
@@ -243,16 +329,6 @@ body,
     border: none;
     border-bottom: 2px solid rgb(47, 196, 60);
     background-color: rgb(240, 244, 247);
-}
-
-#imgUpload {
-    width: 150px;
-    height: 200px;
-    margin: 10px;
-    cursor: pointer;
-    background-color: rgb(22, 133, 11);
-    margin-top: 8%;
-    margin-left: 5%;
 }
 
 #uploadPg {
@@ -295,7 +371,7 @@ body,
 }
 
 
-.nameBookSearch{
+.nameBookSearch {
     text-decoration-line: underline;
     color: rgb(22, 133, 11);
     font-weight: bold;
@@ -343,7 +419,10 @@ body,
 #frontCover {
     width: 80px;
     height: 110px;
-    background-color: green;
+    background-image: url('../images/previewUnavailable.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     margin-top: 7%;
     margin-left: 5%;
 }
@@ -431,10 +510,6 @@ body,
     margin-bottom: 5%;
 }
 
-#bookRevTitle {}
-
-#reviewerName {}
-
 #revAge {
     margin-top: 10%;
 }
@@ -444,7 +519,7 @@ body,
     justify-content: left;
 }
 
-#revTitleTitle{
+#revTitleTitle {
     margin-left: 5%;
     margin-top: 3%;
 }
@@ -478,8 +553,11 @@ body,
 #revBookCoverId {
     width: 140px;
     height: 200px;
-    background-color: green;
     margin-left: 15%;
+    background-image: url('../images/previewUnavailable.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 #barcodeNumber {
@@ -534,16 +612,6 @@ body,
 }
 
 /*personal page ------------------------------------------------------------------------------------------------------ */
-#personalPg {
-    margin-top: -20%;
-}
-
-#logOutPopUp {
-    width: 200px;
-    height: 150px;
-    background-color: rgb(202, 202, 202);
-}
-
 #logOut {
     width: 100px;
     height: 50px;
@@ -569,6 +637,12 @@ body,
 .fllwWord {
     margin-top: 1%;
     color: rgb(143, 138, 138);
+}
+
+#imgUpload {
+    width: 100%;
+    height: 5vh;
+    display: flex;
 }
 
 .pfpLarge {
@@ -608,7 +682,10 @@ body,
     height: 50px;
     width: 414px;
     bottom: 68%;
-    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10%;
 }
 
 .followingList {
@@ -664,13 +741,23 @@ body,
     margin-left: 3%;
 }
 
+/*scanner page*/
+#bcreader {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+#badLightNotice {
+    margin-top: 30%;
+}
+
 /*home page style*/
 #homePg {
     width: 414px;
     height: 97vh;
 }
 
-#homeTxt{
+#homeTxt {
     margin-top: -6%;
     margin-bottom: 5%;
 }
