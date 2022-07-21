@@ -815,18 +815,6 @@ $(document).ready(function () { //makes sure the document is always ready
         return str2;
     }
 
-
-    function findFollowing() {
-        getFollowers(fllwUrl, apikey);
-        //something current user
-        for (var i = 0; i < arrUsers.length; i++) {
-            if (arrFollow[i].follower == currentUser) {
-                usersFollowing.push(arrFollow[i].following);
-                console.log(usersFollowing);
-            }
-        }
-    }
-
     //---- accessing someone's page -------------------------------
     function findOtherUser(lookingFor) { //TO DO: set this to.... TO WHAT???
         //need to take from the button
