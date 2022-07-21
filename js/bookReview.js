@@ -11,12 +11,10 @@ var arrSearch = [];
 var arrSameBCode = [];
 var currentUser = '';
 var jsonData = [];
-var usersFollowing = [''];
-var usersFollowers = [''];
 var otherUserInfo = [];
-var topReviews = [];
-var usersReviews = [];
 
+
+//function [a-zA-Z]+\(
 //-----------------getting data--------------------------
 //----- gets book review data ---------------------------
 function getBooks(url, apikey) {
@@ -838,6 +836,7 @@ $(document).ready(function () { //makes sure the document is always ready
         }
         return otherUserInfo;
     }
+
     function findFollowed(lookingFor) {
         var notFound = true;
         var count = 0;
@@ -895,7 +894,7 @@ $(document).ready(function () { //makes sure the document is always ready
         document.querySelector('#searchPg').classList.remove("hidden");
         document.querySelector('#scanPg').classList.add("hidden");
         //stop(): Promise<void> {};
-    }
+    }``
 
     function onScanFailure(error) {
         hasScanned = false;
