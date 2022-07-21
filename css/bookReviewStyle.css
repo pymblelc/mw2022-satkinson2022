@@ -743,6 +743,7 @@ body,
 
 #yourPosts {
     margin-left: 3%;
+    cursor: default;
 }
 
 /*scanner page*/

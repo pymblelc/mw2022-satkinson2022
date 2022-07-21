@@ -731,7 +731,7 @@ $(document).ready(function () { //makes sure the document is always ready
         console.log(bookData);
 
         //---- displays relevant error text if reqs are met
-        if ($('#bookName').val() == "" || $('#bookAuthor').val() == "" || $('#bookRelease').val() == "" || $('#barcodeId').val() == "" || $('#bookAgeReq').val() == "" || $('#barcodeId').val().length < 13) {
+        if ($('#bookName').val() == "" || $('#bookAuthor').val() == "" || $('#bookRelease').val() == "" || $('#barcodeId').val() == "" || $('#bookAgeReq').val() == "" || $('#barcodeId').val().length < 13 || $('#barcodeId').val().length > 13) {
             $('.redText').show();
         } else {
             addBook(bookData, bookReviewUrl, '621d80b634fd621565858a79', arrBooks);
