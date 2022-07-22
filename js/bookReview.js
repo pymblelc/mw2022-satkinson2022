@@ -1,20 +1,32 @@
+//---- VARIABLES ---------------------------------------------
+//---- access database collection variables 
 var apikey = '621d80b634fd621565858a79';
 var bookReviewUrl = 'https://bookreviewdb-4d45.restdb.io/rest/bookreviews';
 var usersUrl = 'https://bookreviewdb-4d45.restdb.io/rest/bookusers';
 var fllwUrl = 'https://bookreviewdb-4d45.restdb.io/rest/followers';
 var timesReviewUrl = 'https://bookreviewdb-4d45.restdb.io/rest/timesreview';
+//---- arrays for storing data from the  collections
 var arrUsers = [''];
 var arrBooks = [''];
 var arrFollow = [''];
 var arrTimesRev = [];
+//---- other arrays
 var arrSearch = [];
 var arrSameBCode = [];
-var currentUser = '';
+//---- objects
 var jsonData = [];
 var otherUserInfo = [];
+//---- string 
+var currentUser = '';
+//---- scanner variables
+var hasScanned = false;
+let html5QrcodeScanner = new Html5QrcodeScanner(
+    "bcreader",
+    { fps: 10, qrbox: { width: 250, height: 250 } },
+    verbose = false
+);
 
-
-//function [a-zA-Z]+\(
+//---- FUNCTIONS ---------------------------------------------
 //-----------------getting data--------------------------
 //----- gets book review data ---------------------------
 function getBooks(url, apikey) {
@@ -296,7 +308,6 @@ function deleteWhoFllw(itemID) {
 
 
 
-
 $(document).ready(function () { //makes sure the document is always ready
     //----- gets data----------------------------
     getUsers(usersUrl, '621d80b634fd621565858a79');
@@ -313,46 +324,7 @@ $(document).ready(function () { //makes sure the document is always ready
             document.querySelector(page).classList.remove("hidden");
         });
     }
-
-    //--- sorting data for home page --------
-    function sortReviews(array) { //this sort works
-        let index = 0;
-        let nextElementIndex = 0;
-        while (index < array.length - 1) {
-            nextElementIndex = index + 1;
-            let maximum = index;
-            while (nextElementIndex < array.length) {
-                if (array[maximum].timesReviewed < array[nextElementIndex].timesReviewed) {
-                    maximum = nextElementIndex;
-                }
-                nextElementIndex++;
-            }
-            if (maximum != index) {
-                [array[index], array[maximum]] = [array[maximum], array[index]];
-            }
-
-            index++;
-        }
-        return array;
-    }
-
-    function displayHomePage() {
-        var sortedArr = sortReviews(arrTimesRev);
-        var sortObj = [];
-        for (var i = 0; i < 3; i++) {
-            var count = 0;
-            var added = false
-            while (count < arrBooks.length && added === false) {
-                if (sortedArr[i].title.toLowerCase() == arrBooks[count].bookName.toLowerCase()) {
-                    sortObj.push(arrBooks[count]);
-                    added = true;
-                    motherDiv(sortObj, '#comingSoon');
-                }
-                count++;
-            }
-        }
-    }
-
+    //---- signing up function
     //----- saving new user data ---> used when they sign up to create an account ------------
     function saveData() {
         //----- variables used for checking 
@@ -404,7 +376,6 @@ $(document).ready(function () { //makes sure the document is always ready
 
     }
 
-
     //---- used to update the data with the first and surname  ------------------
     function updateData(obj) {
         console.log('button clicked'); //check if function runs
@@ -427,8 +398,7 @@ $(document).ready(function () { //makes sure the document is always ready
         console.log(obj);
     }
 
-
-    //---- finding the user data to log in the user
+    //---- logging in function
     function login() {
         //---- getting values from inputs
         var username = $('#enterUsername').val();
@@ -464,106 +434,7 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
-    //---- used to set the personal page details --------------
-    function setPersonalPage(obj) { //TODO: fix this, not working with sign up
-        //---- displays users username
-        $('#setUserName').html(currentUser)
-
-        //---- loops over arrUsers to display correct details
-        //console.log(arrUsers[i].username);
-
-        //---- if details are correct then displays first and second name
-        $('#setFirstName').html(obj.firstName);
-        $('#setSurname').html(obj.surname);
-        $('#ttlFllw').html(obj.followers);
-        $('#ttlFllwing').html(obj.following);
-        setPersonalReviews(currentUser, '#personalPgRevs');
-
-
-    }
-
-    function setPersonalReviews(username, page) {
-        var usersReviews = [];
-        for (var i = 0; i < arrBooks.length; i++) {
-            if (username == arrBooks[i].reviewer) {
-                usersReviews.push(arrBooks[i]);
-            }
-        }
-        motherDiv(usersReviews, page)
-    }
-
-    //---- displays the other users pages ---------------------------
-
-    function setOtherPage(object) {
-        $('#otherPersonal').html(object.username);
-        $('#otherFN').html(object.firstName);
-        $('#otherSN').html(object.surname);
-        $('#otherSN').html(object.surname);
-        $('#otherTtlFllwing').html(object.following);
-        $('#otherTtlFllwers').html(object.followers);
-        setPersonalReviews(object.username, '#otherPersonsRevs')
-        var userFollowing = checkIfFollow(currentUser, object.username);
-        if (userFollowing === true) {
-            document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
-            document.querySelector("#follow").classList.add("hidden");
-        } else {
-            document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
-            document.querySelector("#follow").classList.remove("hidden");
-        }
-    }
-
-    //---- set the review page ------------
-    function setReview(object) {
-        $('#bookRevTitle').html(object.bookName + " - ");
-        $('#revAuthor').html(object.author);
-        setStars(object.rating);
-        $('#revRelease').html(object.releaseDate);
-        $('#reviewParag').html(object.wordedRating);
-        $('#reviewerName').html(object.reviewer);
-        $('#barcodeNumber').html(object.barcodeNumber);
-        $('#postDate').html(object.dateAdded);
-        $('#revAge').html(object.ageRating);
-    }
-
-    //---- check if following -----------
-    function checkIfFollow(user, otherUser) { //this will be useful when displaying if another person is following maybe
-        //find the other username from the page
-        var followed = false;
-        for (var i = 0; i <= arrFollow.length - 1; i++) {
-            if (user == arrFollow[i].follower && otherUser == arrFollow[i].followed && followed === false) {
-                followed = true;
-            }
-        }
-        return followed;
-    }
-
-    //---- update other users followers --------------
-    function updateFollowers(name) {
-        //get the user it is 
-        //update the following
-        var toBeFllw = findOtherUser(name);
-        var currentP = findOtherUser(currentUser);
-        var currentPId = currentP.id;
-        var itemID = toBeFllw.id;
-        updateFollow(toBeFllw, itemID, true);
-        updateNumFollowing(currentP, currentPId, true);
-        //add that to the database
-    }
-
-    //---- creates a div for the each of the search page items ----------------
-    function createDiv(ident, c_name, toAdd, text) {
-        let div = document.createElement('div');
-        div.className = c_name;
-        div.id = ident;
-        console.log(toAdd);
-        document.getElementById(toAdd).appendChild(div);
-
-        //---- adds the text you want to show
-        div.textContent = text;
-        console.log(div);
-    }
-
-
+    //---- functions to display divs on screen -------------------------
     //---- creates the div which all the search information will fall into  ------------------
     function motherDiv(array, page) {
         $('.searchResults').remove();
@@ -581,8 +452,6 @@ $(document).ready(function () { //makes sure the document is always ready
             displaySearch(array[i], mother.id);
         }
     }
-
-
     //---- displays what the user has put in the search bar  ------------------
     function displaySearch(search, motherDiv) {
         console.log("Display search");
@@ -630,7 +499,178 @@ $(document).ready(function () { //makes sure the document is always ready
         });
 
     }
+    //---- creates a div for the each of the search page items ----------------
+    function createDiv(ident, c_name, toAdd, text) {
+        let div = document.createElement('div');
+        div.className = c_name;
+        div.id = ident;
+        console.log(toAdd);
+        document.getElementById(toAdd).appendChild(div);
 
+        //---- adds the text you want to show
+        div.textContent = text;
+        console.log(div);
+    }
+
+
+    //---- functions for profile pages -----------------------------------------
+    //---- personal profile pages ----------------------------------------------
+    //---- used to set the personal page details --------------
+    function setPersonalPage(obj) {
+        //---- displays users username
+        $('#setUserName').html(currentUser)
+
+        //---- loops over arrUsers to display correct details
+        //console.log(arrUsers[i].username);
+
+        //---- if details are correct then displays first and second name
+        $('#setFirstName').html(obj.firstName);
+        $('#setSurname').html(obj.surname);
+        $('#ttlFllw').html(obj.followers);
+        $('#ttlFllwing').html(obj.following);
+        setPersonalReviews(currentUser, '#personalPgRevs');
+
+
+    }
+    //---- sets the pages for other users ---------------------------
+    function setOtherPage(object) {
+        $('#otherPersonal').html(object.username);
+        $('#otherFN').html(object.firstName);
+        $('#otherSN').html(object.surname);
+        $('#otherSN').html(object.surname);
+        $('#otherTtlFllwing').html(object.following);
+        $('#otherTtlFllwers').html(object.followers);
+        setPersonalReviews(object.username, '#otherPersonsRevs')
+        var userFollowing = checkIfFollow(currentUser, object.username);
+        if (userFollowing === true) {
+            document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
+            document.querySelector("#follow").classList.add("hidden");
+        } else {
+            document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
+            document.querySelector("#follow").classList.remove("hidden");
+        }
+    }
+
+    //---- finding and creating an object for a user -------------------------------
+    function findOtherUser(lookingFor) {
+        //need to take from the button
+        var notFound = true;
+        var count = 0;
+        while (count < arrUsers.length && notFound === true) {
+            if (arrUsers[count].username == lookingFor) { //repeats for awhile
+                notFound = false;
+                otherUserInfo = {
+                    "id": arrUsers[count]._id,
+                    "username": lookingFor,
+                    "password": arrUsers[count].password,
+                    "firstName": arrUsers[count].firstName,
+                    "surname": arrUsers[count].surname,
+                    "followers": arrUsers[count].followers,
+                    "following": arrUsers[count].following,
+                    "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
+                }
+            }
+            count++
+        }
+        return otherUserInfo;
+    }
+
+    //---- check if following -----------
+    function checkIfFollow(user, otherUser) { //this will be useful when displaying if another person is following maybe
+        //find the other username from the page
+        var followed = false;
+        for (var i = 0; i <= arrFollow.length - 1; i++) {
+            if (user == arrFollow[i].follower && otherUser == arrFollow[i].followed && followed === false) {
+                followed = true;
+            }
+        }
+        return followed;
+    }
+
+    //---- update other users followers --------------
+    function updateFollowers(name) {
+        //get the user it is 
+        //update the following
+        var toBeFllw = findOtherUser(name);
+        var currentP = findOtherUser(currentUser);
+        var currentPId = currentP.id;
+        var itemID = toBeFllw.id;
+        updateFollow(toBeFllw, itemID, true);
+        updateNumFollowing(currentP, currentPId, true);
+        //add that to the database
+    }
+
+    //---- finds if user follows someone ---------------------------------
+    function findFollowed(lookingFor) {
+        var notFound = true;
+        var count = 0;
+        while (count < arrFollow.length && notFound === true) {
+            if (arrFollow[count].followed == lookingFor && arrFollow[count].follower == currentUser) {
+                notFound = false;
+                otherUserInfo = {
+                    "id": arrFollow[count]._id,
+                    "followed": arrFollow[count].followed,
+                    "follower": arrFollow[count].follower,
+                }
+            }
+            count++
+        }
+        return otherUserInfo;
+    }
+
+    //---- follows someone ------
+    function follow(beingFllw) {
+        var followed = findOtherUser(beingFllw);
+        //TODO: show the other button
+        var followData = {
+            "follower": currentUser,
+            "followed": followed.username,
+        }
+        addFollowing(followData, fllwUrl, apikey); //TODO: find what to put in here
+        updateFollowers(beingFllw);
+        document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
+        document.querySelector("#follow").classList.add("hidden");
+
+    }
+
+    //---- unfollows someone ------
+    function unfollow(currentFllw) {
+        //TODO: show other button
+        //remove following
+        var unfollowed = findOtherUser(currentFllw);
+        var currentP = findOtherUser(currentUser);
+        var toBeUnfollow = findFollowed(currentFllw)
+        deleteWhoFllw(toBeUnfollow.id);
+        updateFollow(unfollowed, unfollowed.id, false);
+        updateNumFollowing(currentP, currentP.id, false);
+        document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
+        document.querySelector("#follow").classList.remove("hidden");
+    }
+
+
+    //---- functions for displaying info on review page --------------------------
+    //---- sets the reviews on profile which are written by the specified user --
+    function setPersonalReviews(username, page) {
+        var usersReviews = [];
+        for (var i = 0; i < arrBooks.length; i++) {
+            if (username == arrBooks[i].reviewer) {
+                usersReviews.push(arrBooks[i]);
+            }
+        }
+        motherDiv(usersReviews, page)
+    }
+    //---- set the information for review page ------------
+    function setReview(object) {
+        $('#bookRevTitle').html(object.bookName + " - ");
+        $('#revAuthor').html(object.author);
+        setStars(object.rating);
+        $('#revRelease').html(object.releaseDate);
+        $('#reviewParag').html(object.wordedRating);
+        $('#reviewerName').html(object.reviewer);
+        $('#barcodeNumber').html(object.barcodeNumber);
+        $('#postDate').html(object.dateAdded);
+        $('#revAge').html(object.ageRating);
+    }
     //---- loops through and showcases the amount of stars ---------------------
     function setStars(stars) {
         document.getElementById('reviewStars').innerHTML = "";
@@ -642,53 +682,8 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
-    //---- updates the number of times something has been reviewed -----------
-    function findRevExist(name) {
-        var exists = false;
-        for (var i = 0; i < arrTimesRev.length; i++) {
-            if (arrTimesRev[i].title.toLowerCase() == name) {
-                exists = true;
-            }
-        }
-        return exists;
-    }
 
-    function revObj(name) {
-        var found = false;
-        var obj = [''];
-        while (found === false) {
-            for (var i = 0; i < arrTimesRev.length; i++) {
-                if (name == arrTimesRev[i].title) {
-                    obj = arrTimesRev[i];
-                    found = true;
-                    break;
-                }
-            }
-        }
-        return obj;
-    }
-
-    function numRevs(name) {
-        var exists = findRevExist(name);
-        var done = false
-        if (exists === true && done === false) {
-            for (var j = 0; j < arrTimesRev.length; j++) {
-                if (arrTimesRev[j].title.toLowerCase() == name) { //finding wrong item
-                    var obj = revObj(name);
-                    updateTimesRev(obj, obj._id);
-                    done = true;
-                    break;
-                }
-            }
-        } else {
-            jsonData = {
-                "title": name,
-                "timesReviewed": 1,
-            }
-            addTimesRev(jsonData, timesReviewUrl, '621d80b634fd621565858a79');
-            done = true;
-        }
-    }
+    //---- upload page functions ------------------------------------------------
     //---- creates an object for the review a user creates  ------------------
     function createReview() {
         //var image = ""; //TODO: preview unavailable
@@ -738,18 +733,58 @@ $(document).ready(function () { //makes sure the document is always ready
         }
         console.log(arrBooks);
     }
-
-    //---- finds book to showcase based on the barcode ----------------------------------
-    function searchBarCode(barcode) {
-        for (var i = 0; i < arrBooks.length; i++) {
-            if (barcode == arrBooks[i].barcodeNumber) {
-                arrSameBCode.push(arrBooks[i]);
-                motherDiv(arrSameBCode, '#searchPg');
+    //---- updates the number of times something has been reviewed -----------
+    function findRevExist(name) {
+        var exists = false;
+        for (var i = 0; i < arrTimesRev.length; i++) {
+            if (arrTimesRev[i].title.toLowerCase() == name) {
+                exists = true;
             }
         }
-
+        return exists;
     }
 
+    //---- finds object in arrTimesRev and returns -------------------------
+    function revObj(name) {
+        var found = false;
+        var obj = [''];
+        while (found === false) {
+            for (var i = 0; i < arrTimesRev.length; i++) {
+                if (name == arrTimesRev[i].title) {
+                    obj = arrTimesRev[i];
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return obj;
+    }
+
+    //---- if obj exists in arrTimesRev, add one to timesreviewed, otherwise creates new object -----
+    function numRevs(name) {
+        var exists = findRevExist(name);
+        var done = false
+        if (exists === true && done === false) {
+            for (var j = 0; j < arrTimesRev.length; j++) {
+                if (arrTimesRev[j].title.toLowerCase() == name) { //finding wrong item
+                    var obj = revObj(name);
+                    updateTimesRev(obj, obj._id);
+                    done = true;
+                    break;
+                }
+            }
+        } else {
+            jsonData = {
+                "title": name,
+                "timesReviewed": 1,
+            }
+            addTimesRev(jsonData, timesReviewUrl, '621d80b634fd621565858a79');
+            done = true;
+        }
+    }
+
+
+    //---- search page functions ------------------------------------------------
     //---- turns search terms into an array of keywordsF --------------------------------
     function createKeywords(string, arr) {
         //---- everything lowercase so it can match with bookName in DB
@@ -759,7 +794,6 @@ $(document).ready(function () { //makes sure the document is always ready
         arr.push(string.split(" "));
         console.log(arr);
     }
-
 
     //---- uses the keywords to find the book review which contains those words --------------
     function findIndexSearch(find) {
@@ -791,14 +825,12 @@ $(document).ready(function () { //makes sure the document is always ready
         }
     }
 
-
     //---- quick way to check if the search term exists  ------------------
     function findSearchTerm() {
         var searchTerm = $('#searchBar').val(); //text from search bar
         findIndexSearch(searchTerm);
         console.log(searchTerm);
     }
-
 
     //---- makes only the first letter upper case; useful for presenting books  ------------------
     function firstLetterUpper(word) {
@@ -813,75 +845,61 @@ $(document).ready(function () { //makes sure the document is always ready
         return str2;
     }
 
-    //---- accessing someone's page -------------------------------
-    function findOtherUser(lookingFor) { //TO DO: set this to.... TO WHAT???
-        //need to take from the button
-        var notFound = true;
-        var count = 0;
-        while (count < arrUsers.length && notFound === true) {
-            if (arrUsers[count].username == lookingFor) { //repeats for awhile
-                notFound = false;
-                otherUserInfo = {
-                    "id": arrUsers[count]._id,
-                    "username": lookingFor,
-                    "password": arrUsers[count].password,
-                    "firstName": arrUsers[count].firstName,
-                    "surname": arrUsers[count].surname,
-                    "followers": arrUsers[count].followers,
-                    "following": arrUsers[count].following,
-                    "profilePic": 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Placeholder_no_text.svg/1200px-Placeholder_no_text.svg.png',
+
+    //---- home page functions ----------------------------------------------------
+    //--- sorting data for home page --------
+    function sortReviews(array) { //this sort works
+        let index = 0;
+        let nextElementIndex = 0;
+        while (index < array.length - 1) {
+            nextElementIndex = index + 1;
+            let maximum = index;
+            while (nextElementIndex < array.length) {
+                if (array[maximum].timesReviewed < array[nextElementIndex].timesReviewed) {
+                    maximum = nextElementIndex;
                 }
+                nextElementIndex++;
             }
-            count++
-        }
-        return otherUserInfo;
-    }
+            if (maximum != index) {
+                [array[index], array[maximum]] = [array[maximum], array[index]];
+            }
 
-    function findFollowed(lookingFor) {
-        var notFound = true;
-        var count = 0;
-        while (count < arrFollow.length && notFound === true) {
-            if (arrFollow[count].followed == lookingFor && arrFollow[count].follower == currentUser) {
-                notFound = false;
-                otherUserInfo = {
-                    "id": arrFollow[count]._id,
-                    "followed": arrFollow[count].followed,
-                    "follower": arrFollow[count].follower,
+            index++;
+        }
+        return array;
+    }
+    //--- displays top 3 reviews ------------
+    function displayHomePage() {
+        var sortedArr = sortReviews(arrTimesRev);
+        var sortObj = [];
+        for (var i = 0; i < 3; i++) {
+            var count = 0;
+            var added = false
+            while (count < arrBooks.length && added === false) {
+                if (sortedArr[i].title.toLowerCase() == arrBooks[count].bookName.toLowerCase()) {
+                    sortObj.push(arrBooks[count]);
+                    added = true;
+                    motherDiv(sortObj, '#comingSoon');
                 }
+                count++;
             }
-            count++
         }
-        return otherUserInfo;
     }
 
-    function follow(beingFllw) {
-        var followed = findOtherUser(beingFllw);
-        //TODO: show the other button
-        var followData = {
-            "follower": currentUser,
-            "followed": followed.username,
+    //---- finds book to showcase based on the barcode ----------------------------------
+    function searchBarCode(barcode) {
+        for (var i = 0; i < arrBooks.length; i++) {
+            if (barcode == arrBooks[i].barcodeNumber) {
+                arrSameBCode.push(arrBooks[i]);
+                motherDiv(arrSameBCode, '#searchPg');
+            }
         }
-        addFollowing(followData, fllwUrl, apikey); //TODO: find what to put in here
-        updateFollowers(beingFllw);
-        document.querySelector("#unfollow").classList.remove("hidden"); //---- shows taskbar
-        document.querySelector("#follow").classList.add("hidden");
 
     }
 
-    function unfollow(currentFllw) {
-        //TODO: show other button
-        //remove following
-        var unfollowed = findOtherUser(currentFllw);
-        var currentP = findOtherUser(currentUser);
-        var toBeUnfollow = findFollowed(currentFllw)
-        deleteWhoFllw(toBeUnfollow.id);
-        updateFollow(unfollowed, unfollowed.id, false);
-        updateNumFollowing(currentP, currentP.id, false);
-        document.querySelector("#unfollow").classList.add("hidden"); //---- shows taskbar
-        document.querySelector("#follow").classList.remove("hidden");
-    }
 
-    var hasScanned = false;
+    //---- search scan functions --------------------------
+    //---- what happens when the scan is successful -----
     function onScanSuccess(decodedText, decodedResult) {
         if (hasScanned) return;
         hasScanned = true;
@@ -894,28 +912,15 @@ $(document).ready(function () { //makes sure the document is always ready
         document.querySelector('#searchPg').classList.remove("hidden");
         document.querySelector('#scanPg').classList.add("hidden");
         //stop(): Promise<void> {};
-    }``
+    } ``
 
+    //---- what happens when the scan in unsuccessful -----
     function onScanFailure(error) {
         hasScanned = false;
         console.warn(`Code scan error = ${error}`);
     }
 
-    let html5QrcodeScanner = new Html5QrcodeScanner(
-        "bcreader",
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        verbose = false
-    );
-
-
-
-
-    //---- checking scanner button exists ----------------------------
-
-
-
     //---- calling functions and click handlers--------------------------------------
-
     //---- sign up page buttons -----------------------
     $('#saveFormalData').click(function () { //when continue is pressed
         saveData();
@@ -954,6 +959,10 @@ $(document).ready(function () { //makes sure the document is always ready
         html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     })
 
+    $("#homeBtn").click(function () {
+        displayHomePage();
+    });
+
     //---- settings on personal page clicked
     $("#personalSettings").click(function () {
         //---- checks whether the or not the popUp is showing
@@ -964,26 +973,16 @@ $(document).ready(function () { //makes sure the document is always ready
         }
 
     });
+
     $("#userBtn").click(function () {
         setPersonalReviews(currentUser, '#personalPgRevs')
     })
 
-    //---- log out button
-    $("#logOut").click(function () {
-        currentUser = "";
-        alert('loggedOut');
-        location.reload();
-    });
-
-    $("#homeBtn").click(function () {
-        displayHomePage();
-    });
-
     $("#imageUpload").click(function () {
         alert('Unable to upload');
     });
-    //---- switching though pages
 
+    //---- switching though pages
     switchPages('#searchBtn', '#searchPg');
     switchPages('#uploadBtn', '#uploadPg');
     switchPages('#userBtn', '#personalPg');
@@ -1007,6 +1006,13 @@ $(document).ready(function () { //makes sure the document is always ready
         document.querySelector("#loginPg").classList.remove("hidden");
         document.querySelector("#secondQs").classList.add("hidden");
         document.querySelector("#firstQs").classList.remove("hidden");
+    });
+
+    //---- log out button
+    $("#logOut").click(function () {
+        currentUser = "";
+        alert('loggedOut');
+        location.reload();
     });
 })
 
