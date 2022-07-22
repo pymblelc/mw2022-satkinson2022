@@ -879,7 +879,7 @@ $(document).ready(function () { //makes sure the document is always ready
                 if (sortedArr[i].title.toLowerCase() == arrBooks[count].bookName.toLowerCase()) {
                     sortObj.push(arrBooks[count]);
                     added = true;
-                    motherDiv(sortObj, '#comingSoon');
+                    motherDiv(sortObj, '#homePg');
                 }
                 count++;
             }
@@ -986,7 +986,7 @@ $(document).ready(function () { //makes sure the document is always ready
     switchPages('#searchBtn', '#searchPg');
     switchPages('#uploadBtn', '#uploadPg');
     switchPages('#userBtn', '#personalPg');
-    switchPages('#homeBtn', '#comingSoon');
+    switchPages('#homeBtn', '#homePg');
     switchPages('#barcodeBtn', '#scanPg');
 
     $('#signUpBtn').click(function () {
